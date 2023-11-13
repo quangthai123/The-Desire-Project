@@ -11,6 +11,7 @@ public class PlayerBlockState : PlayerState
     {
         base.Enter();
         stateDurationCounter = player.blockDuration;
+        AudioManager.instance.playerSFX(6);
     }
 
     public override void Exit()

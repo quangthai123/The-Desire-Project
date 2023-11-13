@@ -12,6 +12,9 @@ public class PlayerDashState : PlayerState
     {
         base.Enter();
         stateDurationCounter = player.dashDuration;
+        player.mainBox.isTrigger = true;
+        player.lieDownBox.enabled = true;
+        AudioManager.instance.playerSFX(2);
     }
 
     public override void Exit()
@@ -19,12 +22,14 @@ public class PlayerDashState : PlayerState
         base.Exit();
         rb.velocity = Vector2.zero;
         player.dashCooldownCounter = player.dashCooldown;
+        player.mainBox.isTrigger = false;
+        player.lieDownBox.enabled = false;
     }
 
     public override void Update()
     {
         base.Update();
-        if (stateDurationCounter > 0f)
+        if (stateDurationCounter > 0f && player.GroundDetected())
         {
             rb.velocity = new Vector2(player.dashSpeed * player.facingDirection, 0f);
         }

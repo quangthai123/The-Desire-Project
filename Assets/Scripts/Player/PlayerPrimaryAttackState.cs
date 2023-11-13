@@ -18,6 +18,8 @@ public class PlayerPrimaryAttackState : PlayerState
         {
             comboCounter = 0;
         }
+        if (comboCounter == 0)
+            AudioManager.instance.playerSFX(1);
     }
 
     public override void Exit()
@@ -36,6 +38,10 @@ public class PlayerPrimaryAttackState : PlayerState
         rb.velocity = Vector3.zero;
         if (finishAnim)
             stateMachine.ChangeState(player.idleState);
+        if (xInput > 0 && player.facingDirection < 0)
+            player.Flip();
+        else if (xInput < 0 && player.facingDirection > 0)
+            player.Flip();
     }
 
     public void DamageEnemy()

@@ -21,11 +21,16 @@ public class Player : MonoBehaviour
     public PlayerPrimaryAttackState primaryAttackState { get; private set; }
     #endregion
     public bool enemyDectected { get; private set; }
+    public BoxCollider2D mainBox;
+    public BoxCollider2D lieDownBox;
+    private Vector2 boxSize;
     [Header("Collision Infor")]
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private float wallCheckDistance;
     [SerializeField] private LayerMask whatIsWall;
+    [SerializeField] private float groundCheckDisRay;
+
 
     [Header("Dash Infor")]
     public float dashDuration;
@@ -40,7 +45,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float radiusEnemyDetected;
     [SerializeField] private LayerMask whatIsEnemy;
     public Rigidbody2D rb { get; private set; }
-    [SerializeField] private BoxCollider2D col;
     public float speed;
     public float jumpForce;
     public int facingDirection { get; private set; }
@@ -68,6 +72,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         stateMachine.Initialize(idleState);
         facingDirection = 1;
+        lieDownBox.enabled = false;
+        boxSize = new Vector2(mainBox.bounds.size.x / 1.25f, mainBox.bounds.size.y / 2.5f);
     }
     void Update()
     {
@@ -75,6 +81,8 @@ public class Player : MonoBehaviour
         FlipController();
         dashCooldownCounter -= Time.deltaTime;
         DetectEnemy();
+        if(CheckGroundAction() && rb.velocity.y < -1f)
+            AudioManager.instance.playerSFX(4);
     }
 
     private void DetectEnemy()
@@ -101,12 +109,14 @@ public class Player : MonoBehaviour
     }
     private void FinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     public bool WallDetected() => Physics2D.Raycast(transform.position, Vector2.right*facingDirection, wallCheckDistance, whatIsWall);
-    public bool GroundDetected() => Physics2D.BoxCast(col.bounds.center, col.bounds.size/1.5f, 0f, Vector2.down, groundCheckDistance, whatIsGround);
+    public bool CheckGroundAction() => Physics2D.Raycast(transform.position, Vector2.down, groundCheckDisRay, whatIsGround);
+    public bool GroundDetected() => Physics2D.BoxCast(mainBox.bounds.center, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     
     private void OnDrawGizmos()
     {
-        Gizmos.DrawCube(col.bounds.center - new Vector3(0f, groundCheckDistance, 0f), col.bounds.size / 1.5f);
+        Gizmos.DrawCube(mainBox.bounds.center - new Vector3(0f, groundCheckDistance, 0f), boxSize);
         Gizmos.DrawLine(transform.position, new Vector2(transform.position.x + facingDirection*wallCheckDistance, transform.position.y));
         Gizmos.DrawWireSphere(enemyCheck.position, radiusEnemyDetected);
+        Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - groundCheckDisRay));
     }
 }

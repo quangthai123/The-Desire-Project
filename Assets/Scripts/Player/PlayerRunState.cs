@@ -11,12 +11,14 @@ public class PlayerRunState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        AudioManager.instance.playerSFX(3);
     }
 
     public override void Exit()
     {
         base.Exit();
         rb.velocity = Vector3.zero;
+        AudioManager.instance.StopSFX(3);
     }
 
     public override void Update()

@@ -12,6 +12,7 @@ public class PlayerAirDashState : PlayerState
     {
         base.Enter();
         stateDurationCounter = player.dashDuration-.125f;
+        AudioManager.instance.playerSFX(0);
     }
 
     public override void Exit()

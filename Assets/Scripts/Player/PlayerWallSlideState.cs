@@ -13,11 +13,13 @@ public class PlayerWallSlideState : PlayerState
         base.Enter();
         player.doubleJumped = false;
         player.airDashed = false;
+        AudioManager.instance.playerSFX(7);
     }
 
     public override void Exit()
     {
         base.Exit();
+        AudioManager.instance.StopSFX(7);
     }
 
     public override void Update()

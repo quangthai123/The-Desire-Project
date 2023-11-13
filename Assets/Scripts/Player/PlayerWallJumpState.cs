@@ -11,6 +11,7 @@ public class PlayerWallJumpState : PlayerState
     {
         base.Enter();
         rb.velocity = new Vector2(5f * -player.facingDirection, 15f);
+        AudioManager.instance.playerSFX(5);
     }
 
     public override void Exit()
