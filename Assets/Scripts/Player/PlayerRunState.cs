@@ -26,6 +26,7 @@ public class PlayerRunState : PlayerGroundedState
         base.Update();
         if (xInput == 0)
             stateMachine.ChangeState(player.idleState);
-        rb.velocity = new Vector2(xInput * player.speed, rb.velocity.y);
+        if (!player.isKnocked)
+            rb.velocity = new Vector2(xInput * player.speed, rb.velocity.y);
     }
 }

@@ -25,7 +25,7 @@ public class PlayerAirDashState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (stateDurationCounter > 0)
+        if (stateDurationCounter > 0 && !player.isKnocked)
         {
             rb.velocity = new Vector2(player.dashSpeed * 1.2f * player.facingDirection, 0f);
         }

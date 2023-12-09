@@ -21,7 +21,8 @@ public class PlayerAirState : PlayerState
     public override void Update()
     {
         base.Update();
-        rb.velocity = new Vector2(xInput * player.speed * 0.8f, rb.velocity.y);
+        if(!player.isKnocked)
+            rb.velocity = new Vector2(xInput * player.speed * 0.75f, rb.velocity.y);
         if (player.GroundDetected())
             stateMachine.ChangeState(player.idleState);
         if (Input.GetKeyDown(KeyCode.Space) && !player.doubleJumped)
@@ -34,5 +35,7 @@ public class PlayerAirState : PlayerState
         }
         if (player.WallDetected())
             stateMachine.ChangeState(player.wallSlideState);
+        if (Input.GetKeyDown(KeyCode.K))
+            stateMachine.ChangeState(player.primaryAttackState);
     }
 }

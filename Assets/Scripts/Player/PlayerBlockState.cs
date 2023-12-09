@@ -12,6 +12,7 @@ public class PlayerBlockState : PlayerState
         base.Enter();
         stateDurationCounter = player.blockDuration;
         AudioManager.instance.playerSFX(6);
+        player.anim.SetBool("SuccessfulCounter", false);
     }
 
     public override void Exit()
@@ -23,7 +24,19 @@ public class PlayerBlockState : PlayerState
     {
         base.Update();
         rb.velocity = Vector2.zero;
-        if (stateDurationCounter < 0)
+        Collider2D[] Enemies = Physics2D.OverlapCircleAll(player.enemyCheck.position, player.radiusEnemyDetected);
+        foreach (var enemy in Enemies)
+        {
+            if (enemy.GetComponentInParent<Enemy>() != null)
+            {
+                if (enemy.GetComponentInParent<Enemy>().CanBeStunned())
+                {
+                    stateDurationCounter = 1.5f;
+                    player.anim.SetBool("SuccessfulCounter", true);
+                }
+            }
+        }
+        if (stateDurationCounter < 0 || finishAnim)
         {
             stateMachine.ChangeState(player.idleState);
         }

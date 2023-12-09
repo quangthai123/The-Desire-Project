@@ -23,7 +23,8 @@ public class PlayerJumpState : PlayerState
     public override void Update()
     {
         base.Update();
-        rb.velocity = new Vector2(xInput * player.speed * 0.8f, rb.velocity.y);
+        if (!player.isKnocked)
+            rb.velocity = new Vector2(xInput * player.speed * 0.75f, rb.velocity.y);
         if (rb.velocity.y < -.1f)
             stateMachine.ChangeState(player.airState);
         if(Input.GetKeyDown(KeyCode.Space))
@@ -34,5 +35,7 @@ public class PlayerJumpState : PlayerState
         {
             stateMachine.ChangeState(player.airDashState);
         }
+        if (Input.GetKeyDown(KeyCode.K))
+            stateMachine.ChangeState(player.primaryAttackState);
     }
 }

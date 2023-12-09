@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState
+public class PlayerState 
 {
     protected Player player;
     protected PlayerStateMachine stateMachine;
@@ -41,5 +41,6 @@ public class PlayerState
     public void SetFinishAnimationEvent()
     {
         finishAnim = true;
+        player.anim.speed = 1;
     }
 }

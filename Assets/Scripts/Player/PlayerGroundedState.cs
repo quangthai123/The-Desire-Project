@@ -41,5 +41,7 @@ public class PlayerGroundedState : PlayerState
         {
             stateMachine.ChangeState(player.airState);
         }
+        if (Input.GetKeyDown(KeyCode.F))
+            stateMachine.ChangeState(player.healingState);
     }
 }

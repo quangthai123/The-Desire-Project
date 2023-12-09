@@ -29,7 +29,7 @@ public class PlayerDashState : PlayerState
     public override void Update()
     {
         base.Update();
-        if (stateDurationCounter > 0f && player.GroundDetected())
+        if (stateDurationCounter > 0f && player.GroundDetected() && !player.isKnocked)
         {
             rb.velocity = new Vector2(player.dashSpeed * player.facingDirection, 0f);
         }

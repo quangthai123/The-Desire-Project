@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class PlayerPrimaryAttackState : PlayerState
@@ -14,20 +15,31 @@ public class PlayerPrimaryAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        if(comboCounter > 3 || !player.enemyDectected || Time.time - lastAttackedTime > allowComboTime)
+        if(player.enemyDetected) 
+            AudioManager.instance.playerSFX(9);
+        else
+            AudioManager.instance.playerSFX(1);
+        if (comboCounter > 3 || (!player.enemyDetected && player.GroundDetected()) || Time.time - lastAttackedTime > allowComboTime)
         {
             comboCounter = 0;
         }
-        if (comboCounter == 0)
-            AudioManager.instance.playerSFX(1);
+        if ((comboCounter == 0 && !player.enemyDetected) || (comboCounter==1 && !player.enemyDetected) || (player.enemyDetected && !player.GroundDetected()))
+        {
+            player.anim.speed = 2f;
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
-        if (player.enemyDectected) { 
+        if (player.enemyDetected && player.GroundDetected()) {
             comboCounter++;
-            lastAttackedTime = Time.time;       
+            lastAttackedTime = Time.time;
+        }
+        if (!player.GroundDetected() && comboCounter==0) 
+        {
+            comboCounter++;
+            lastAttackedTime = Time.time;
         }
     }
 
@@ -35,13 +47,24 @@ public class PlayerPrimaryAttackState : PlayerState
     {
         base.Update();
         player.anim.SetInteger("ComboCounter", comboCounter);
-        rb.velocity = Vector3.zero;
+        if(player.GroundDetected())
+            rb.velocity = Vector3.zero;
         if (finishAnim)
             stateMachine.ChangeState(player.idleState);
-        if (xInput > 0 && player.facingDirection < 0)
+        if (xInput > 0 && player.facingDirection < 0 && comboCounter == 0)
             player.Flip();
-        else if (xInput < 0 && player.facingDirection > 0)
+        else if (xInput < 0 && player.facingDirection > 0 && comboCounter == 0)
             player.Flip();
+        if(Input.GetKeyDown(KeyCode.J))
+        {
+            stateMachine.ChangeState(player.blockState);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            if ((xInput < 0 && player.facingDirection == 1) || (xInput > 0 && player.facingDirection == -1))
+                player.Flip();
+            stateMachine.ChangeState(player.dashState);
+        }
     }
 
     public void DamageEnemy()
