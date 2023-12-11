@@ -34,15 +34,16 @@ public class Enemy_EngaredPilgrim : Enemy
         base.Update();
         if(beDamaged)
         {
-            if (stateMachine.currentState != attackState)
+            if (stateMachine.currentState != attackState && stateMachine.currentState != stunnedState)
                 stateMachine.ChangeState(hurtState);
         }
     }
     public override bool CanBeStunned()
     {
-        if(base.CanBeStunned())
+        if (base.CanBeStunned())
         {
-            stateMachine.ChangeState(stunnedState);
+            if(attackedForBeStunned)
+                stateMachine.ChangeState(stunnedState);
             return true;
         }
         return false;

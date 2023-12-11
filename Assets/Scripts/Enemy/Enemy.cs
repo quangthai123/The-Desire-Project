@@ -20,12 +20,19 @@ public class Enemy : Entity
     public bool beDamaged = false;
     [Header("Stunned Infor")]
     protected bool canBeStunned;
+    public bool attackedForBeStunned = false;
+    public EnemyStats enemyStats;
     public EnemyStateMachine stateMachine { get; private set; }
+
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
     }
-    
+    protected override void Start()
+    {
+        base.Start();
+        enemyStats = GetComponent<EnemyStats>();
+    }
     protected override void Update()
     {
         base.Update();
@@ -42,8 +49,21 @@ public class Enemy : Entity
         Collider2D player = Physics2D.OverlapCircle(transform.position, detectPlayerRadius, playerLayer);
         if (player)
         {
-            player.GetComponent<Player>().BeDamaged();
-            AudioManager.instance.playerSFX(8);
+            if (player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().blockState && player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().airDashState && player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().dashState)
+            {
+                if (player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().hurtState)
+                {
+                    player.GetComponent<Player>().BeDamaged(enemyStats.damage.GetValue());
+                    AudioManager.instance.playerSFX(8);
+                }
+            }
+            else if (player.GetComponent<Player>().stateMachine.currentState == player.GetComponent<Player>().blockState && !player.GetComponent<Player>().blockState.isCountering)
+            {
+                player.GetComponent<Player>().rb.velocity = new Vector2(9f * -player.GetComponent<Player>().facingDirection, rb.velocity.y);
+                AudioManager.instance.playerSFX(10);
+            }
+            else if (player.GetComponent<Player>().stateMachine.currentState == player.GetComponent<Player>().blockState && player.GetComponent<Player>().blockState.isCountering)
+                return;
         }
     }
     public void BeDamaged()
@@ -66,5 +86,9 @@ public class Enemy : Entity
             return true;
         } 
         return false;
+    }
+    protected void AttackForBeStunned() 
+    {
+        attackedForBeStunned = true;
     }
 }

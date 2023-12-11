@@ -46,7 +46,7 @@ public class Player : Entity
     public Vector2 knockbackDirection;
     public float knockbackDuration;
     public bool isKnocked = false;
-
+    public PlayerStats playerStats;
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
@@ -69,6 +69,7 @@ public class Player : Entity
         base.Start();
         stateMachine.Initialize(idleState);
         lieDownBox.enabled = false;
+        playerStats = GetComponent<PlayerStats>();
         boxSize = new Vector2(mainBox.bounds.size.x / 1.25f, mainBox.bounds.size.y / 2.5f);
     }
     protected override void Update()
@@ -80,6 +81,16 @@ public class Player : Entity
         DetectEnemy();
         if (CheckGroundAction() && rb.velocity.y < -1f)
             AudioManager.instance.playerSFX(4);
+
+        // Dua binh rong va tien cho npc thi goi ham nay de tang so binh mau toi da, dong thoi hoi lai
+        // toan bo binh mau da mat
+        if (Input.GetKeyDown(KeyCode.E))
+            playerStats.IncreaseMaxFlask(1);
+
+
+        // Save game de hoi toan bo hp, mana va binh mau
+        if (Input.GetKeyDown(KeyCode.R))
+            playerStats.HealingAll();
 
     }
 
@@ -94,19 +105,53 @@ public class Player : Entity
     }
     private void AttackTrigger() 
     {
-        Collider2D[] Enemies = Physics2D.OverlapCircleAll(enemyCheck.position, radiusEnemyDetected);
+        if(enemyDetected)
+            AudioManager.instance.playerSFX(9);
+        Collider2D[] Enemies = Physics2D.OverlapCircleAll(enemyCheck.position, radiusEnemyDetected, whatIsEnemy);
         foreach (var enemy in Enemies)
         {
             if (enemy.GetComponentInParent<Enemy>() != null)
             {
                 enemy.GetComponentInParent<Enemy>().BeDamaged();
+                playerStats.IncreaseManaFromAttack(1);
+                if (stateMachine.currentState != blockState)
+                {
+                    if (primaryAttackState.comboCounter == 0)
+                    {
+                        enemy.GetComponentInParent<EnemyStats>().TakeDamage(playerStats.damage.GetValue());
+                        Debug.Log(playerStats.damage.GetValue());
+                    }
+                    else if (primaryAttackState.comboCounter == 1)
+                    {
+                        enemy.GetComponentInParent<EnemyStats>().TakeDamage(playerStats.damage.GetValue() * 2);
+                        Debug.Log(playerStats.damage.GetValue() * 2);
+                    }
+                    else if (primaryAttackState.comboCounter == 2)
+                    {
+                        enemy.GetComponentInParent<EnemyStats>().TakeDamage(playerStats.damage.GetValue() * 3);
+                        Debug.Log(playerStats.damage.GetValue() * 3);
+                    }
+                    else if (primaryAttackState.comboCounter == 3)
+                    {
+                        enemy.GetComponentInParent<EnemyStats>().TakeDamage(playerStats.damage.GetValue() * 4);
+                        Debug.Log(playerStats.damage.GetValue() * 4);
+                    }
+                }
+                else
+                {
+                    enemy.GetComponentInParent<EnemyStats>().TakeDamage(playerStats.damage.GetValue() * 5);
+                    Debug.Log(playerStats.damage.GetValue() * 5);
+                }
             }
         }
     }
-    public void BeDamaged()
+    public void BeDamaged(int _damage)
     {
         if(!isKnocked)
+        {
             stateMachine.ChangeState(hurtState);
+            playerStats.TakeDamage(_damage);
+        }
     }
     private void FinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     public bool GroundDetected() => Physics2D.BoxCast(mainBox.bounds.center, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
@@ -118,10 +163,10 @@ public class Player : Entity
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && stateMachine.currentState != dashState && stateMachine.currentState != airDashState)
         {
             AudioManager.instance.playerSFX(8);
-            BeDamaged();
+            BeDamaged(5);
         }
     }
 }
