@@ -11,7 +11,8 @@ public class PlayerHealingState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("100hp healed!");
+        AudioManager.instance.playerSFX(12);
+        player.playerStats.Healing();
     }
 
     public override void Exit()

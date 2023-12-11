@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public EntityFx fx { get; private set; }
     public int facingDirection { get; private set; }
+    public System.Action onFlipped;
     [Header("Collision Infor")]
     [SerializeField] private Transform groundCheckPos;
     [SerializeField] protected LayerMask whatIsGround;
@@ -39,6 +40,8 @@ public class Entity : MonoBehaviour
     {
         facingDirection *= -1;
         transform.Rotate(0f, 180f, 0f);
+        if(onFlipped != null)
+            onFlipped();
     }
     public virtual bool WallDetected() => Physics2D.Raycast(transform.position, Vector2.right * facingDirection, wallCheckDistance, whatIsWall);
     public virtual bool CheckGroundMain() => Physics2D.Raycast(transform.position, Vector2.down, groundCheckDisRay, whatIsGround);

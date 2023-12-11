@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_SuccessfulCounterAttack
+  m_Name: Player_Counter
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,16 +20,16 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -1603109114, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
-    - time: 0.3
       value: {fileID: 215744102, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
-    - time: 0.4
+    - time: 0.3
+      value: {fileID: -1603109114, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
+    - time: 0.8
       value: {fileID: 254513966, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
-    - time: 0.5
-      value: {fileID: 1900773076, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
-    - time: 0.6
-      value: {fileID: 199444986, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     - time: 0.9
+      value: {fileID: 1900773076, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
+    - time: 1
+      value: {fileID: 199444986, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
+    - time: 1.1
       value: {fileID: -1264799952, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     attribute: m_Sprite
     path: 
@@ -50,8 +50,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -1603109114, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     - {fileID: 215744102, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
+    - {fileID: -1603109114, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     - {fileID: 254513966, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     - {fileID: 1900773076, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
     - {fileID: 199444986, guid: d9c2f54b07c18dc4a9583d24f912b006, type: 3}
@@ -61,7 +61,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1
+    m_StopTime: 1.2
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -80,4 +80,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.8
+    functionName: AttackTrigger
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.1
+    functionName: FinishAnimation
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

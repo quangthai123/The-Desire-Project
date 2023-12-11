@@ -13,18 +13,24 @@ public class EngaredPilgrimStunnedState : EnemyState
     public override void Start()
     {
         base.Start();
-        stateDurationCounter = 1f;
+        stateDurationCounter = .75f;
         enemy.effect.RedColorBlinkFx();
+        
     }
     public override void Exit()
     {
         base.Exit();
+        
     }
 
     public override void Update()
     {
         base.Update();
         if (stateDurationCounter < 0f)
-            enemyStateMachine.ChangeState(enemy.idleState);
+        {
+            enemy.effect.RedColorBlinkFx();
+            enemyStateMachine.ChangeState(enemy.hurtState);
+        }
+
     }
 }

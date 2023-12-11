@@ -42,6 +42,11 @@ public class PlayerGroundedState : PlayerState
             stateMachine.ChangeState(player.airState);
         }
         if (Input.GetKeyDown(KeyCode.F))
-            stateMachine.ChangeState(player.healingState);
+        {
+            if (player.playerStats.currentFlask > 0 && player.playerStats.currentHealth < player.playerStats.maxHealth.GetValue())
+                stateMachine.ChangeState(player.healingState);
+            else
+                AudioManager.instance.playerSFX(13);
+        }
     }
 }

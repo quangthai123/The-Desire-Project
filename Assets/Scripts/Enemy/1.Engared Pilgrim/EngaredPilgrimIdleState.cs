@@ -12,7 +12,8 @@ public class EngaredPilgrimIdleState : EnemyState
     public override void Start()
     {
         base.Start();
-        if(enemy.PlayerInAttackRange())
+        enemyBase.attackedForBeStunned = false;
+        if (enemy.PlayerInAttackRange())
         {
             stateDurationCounter = enemy.attackCooldown;
             return;
@@ -34,7 +35,7 @@ public class EngaredPilgrimIdleState : EnemyState
                 enemy.Flip();
             if(enemy.playerPos.position.x > enemy.transform.position.x && enemy.facingDirection == -1)
                 enemy.Flip();
-            if (stateDurationCounter <= 0f)
+            if (stateDurationCounter <= 0f && !enemy.beDamaged)
                 enemyStateMachine.ChangeState(enemy.attackState);
         }
         // patroller
