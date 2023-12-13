@@ -13,11 +13,13 @@ public class PlayerHealingState : PlayerState
         base.Enter();
         AudioManager.instance.playerSFX(12);
         player.playerStats.Healing();
+        player.isKnocked = true;
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.isKnocked = false;
     }
 
     public override void Update()

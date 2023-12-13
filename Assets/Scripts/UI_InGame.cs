@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private Slider manaSlider;
     [SerializeField] private Image[] flaskUI;
     [SerializeField] private Image[] emptyFlaskUI;
+    [SerializeField] private TextMeshProUGUI extinctPointText;
     private void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -20,6 +22,7 @@ public class UI_InGame : MonoBehaviour
         UpdateHealthUI();
         UpdateManaUI();
         UpdateFlaskUI();
+        UpdateExtinctPointText();
     }
     private void UpdateHealthUI()
     {
@@ -49,5 +52,9 @@ public class UI_InGame : MonoBehaviour
         {
             emptyFlaskUI[i].enabled = false;
         }
+    }
+    private void UpdateExtinctPointText()
+    {
+        extinctPointText.text = PlayerPrefs.GetInt("extinct") + "";
     }
 }

@@ -22,13 +22,13 @@ public class CharacterStats : MonoBehaviour
     {
         currentHealth -= _damage;
             
-        if(currentHealth < 0 )
+        if(currentHealth <= 0 )
         {
             Die();
         }
     }
     protected virtual void Die()
     {
-        //throw new NotImplementedException();
+        GetComponent<Entity>().isDead = true;
     }
 }

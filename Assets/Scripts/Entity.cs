@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour
     public EntityFx fx { get; private set; }
     public int facingDirection { get; private set; }
     public System.Action onFlipped;
+    public bool isDead = false;
     [Header("Collision Infor")]
     [SerializeField] private Transform groundCheckPos;
     [SerializeField] protected LayerMask whatIsGround;

@@ -55,6 +55,10 @@ public class PlayerBlockState : PlayerState
                     //    rb.velocity = new Vector2(3f * -player.facingDirection, rb.velocity.y);
                     //}
                  }
+            } else if(enemy.GetComponent<Arrow>() != null)
+            {   
+                if(enemy.gameObject.transform.position.y > player.enemyCheck.position.y)
+                    player.isKnocked = true;
             }
         }
         if (stateDurationCounter < 0 || finishAnim)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : CharacterStats
 {
@@ -10,10 +11,11 @@ public class PlayerStats : CharacterStats
     public int currentMana;
     public int maxFlask;
     public int currentFlask;
-
+    private Player playerStates;
     protected override void Start()
     {
         base.Start();
+        playerStates = GetComponent<Player>();
         currentMana = 0;
         currentFlask = currentMaxFlask.GetValue();
     }
@@ -71,5 +73,13 @@ public class PlayerStats : CharacterStats
         currentMana = maxMana.GetValue();
         currentFlask = currentMaxFlask.GetValue();
     }
-
+    protected override void Die()
+    {
+        base.Die();
+        playerStates.stateMachine.ChangeState(playerStates.deathState);
+    }
+    public void ResetGameAfterDied()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

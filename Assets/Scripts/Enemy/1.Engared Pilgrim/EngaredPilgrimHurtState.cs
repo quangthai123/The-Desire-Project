@@ -13,7 +13,8 @@ public class EngaredPilgrimHurtState : EnemyState
     public override void Start()
     {
         base.Start();
-
+        if(!enemy.healthCanvas.enabled)
+            enemyStateMachine.ChangeState(enemy.deathState);
     }
     public override void Exit()
     {
@@ -27,6 +28,8 @@ public class EngaredPilgrimHurtState : EnemyState
     {
         base.Update();
         if (finishAnim)
+        {
             enemyStateMachine.ChangeState(enemy.idleState);
+        }
     }
 }
