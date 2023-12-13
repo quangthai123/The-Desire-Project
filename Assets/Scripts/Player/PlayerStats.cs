@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Sequences;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : CharacterStats
 {
@@ -39,6 +41,21 @@ public class PlayerStats : CharacterStats
     {
         healthInFlask.AddModifier(heal);
     }
+
+    public void IncreaseDamage(int damageToAdd)
+    {
+        damage.AddModifier(damageToAdd);
+    }
+
+    public void DecreaseDamage(int damageToAdd)
+    {
+        damage.RemoveModifier(damageToAdd);
+    }
+
+    public void DecreaseHealthInFlask(int heal)
+    {
+        healthInFlask.RemoveModifier(heal);
+    }
     public void Healing()
     {
         currentFlask--;
@@ -57,6 +74,10 @@ public class PlayerStats : CharacterStats
     {
         maxMana.AddModifier(manaToAdd);
     }
+    public void DecreaseMaxMana(int manaToAdd)
+    {
+        maxMana.RemoveModifier(manaToAdd);
+    }
     public void IncreaseMaxFlask(int flaskToAdd)
     {
         if (currentMaxFlask.GetValue() == maxFlask)
@@ -71,5 +92,10 @@ public class PlayerStats : CharacterStats
         currentMana = maxMana.GetValue();
         currentFlask = currentMaxFlask.GetValue();
     }
-
+    protected override void Die()
+    {
+        base.Die();
+            
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
