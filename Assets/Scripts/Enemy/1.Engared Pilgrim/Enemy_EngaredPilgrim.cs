@@ -10,9 +10,11 @@ public class Enemy_EngaredPilgrim : Enemy
     public EngaredPilgrimAttackState attackState { get; private set; }
     public EngaredPilgrimHurtState hurtState { get; private set; }
     public EngaredPilgrimStunnedState stunnedState { get; private set; }
+    public EngaredPilgrimDeathState deathState { get; private set; }
     public EntityFx effect { get; private set; }
+    public bool canDestroy = false;
+    public BoxCollider2D colTrigger;
 
-    
     protected override void Awake()
     {
         base.Awake();
@@ -21,6 +23,7 @@ public class Enemy_EngaredPilgrim : Enemy
         attackState = new EngaredPilgrimAttackState(this, stateMachine, "Attack", this);
         hurtState = new EngaredPilgrimHurtState(this, stateMachine, "Hurt", this);
         stunnedState = new EngaredPilgrimStunnedState(this, stateMachine, "Stunned", this);
+        deathState = new EngaredPilgrimDeathState(this, stateMachine, "Dead", this);
     }
     protected override void Start()
     {
@@ -32,7 +35,13 @@ public class Enemy_EngaredPilgrim : Enemy
     protected override void Update()
     {
         base.Update();
-        if(beDamaged)
+        if (canDestroy)
+            Destroy(gameObject);
+        if (isDead)
+        {
+            healthCanvas.enabled = false;
+        }
+        if (beDamaged)
         {
             if (stateMachine.currentState != attackState && stateMachine.currentState != stunnedState)
                 stateMachine.ChangeState(hurtState);

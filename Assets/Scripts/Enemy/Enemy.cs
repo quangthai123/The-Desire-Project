@@ -12,7 +12,8 @@ public class Enemy : Entity
     [Header("Detect player")]
     [SerializeField] protected float detectPlayerRadius;
     [SerializeField] protected LayerMask playerLayer;
-    [SerializeField] public Transform playerPos;
+    [HideInInspector] public Transform playerPos;
+    public Canvas healthCanvas;
     [Header("Attack Infor")]
     public float attackCooldown;
 
@@ -21,7 +22,8 @@ public class Enemy : Entity
     [Header("Stunned Infor")]
     protected bool canBeStunned;
     public bool attackedForBeStunned = false;
-    public EnemyStats enemyStats;
+    [HideInInspector]public EnemyStats enemyStats;
+    
     public EnemyStateMachine stateMachine { get; private set; }
 
     protected virtual void Awake()
@@ -32,6 +34,7 @@ public class Enemy : Entity
     {
         base.Start();
         enemyStats = GetComponent<EnemyStats>();
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
     }
     protected override void Update()
     {
@@ -47,23 +50,24 @@ public class Enemy : Entity
     private void AttackTrigger()
     {
         Collider2D player = Physics2D.OverlapCircle(transform.position, detectPlayerRadius, playerLayer);
-        if (player)
+        if (player && !player.GetComponent<Player>().isDead)
         {
-            if (player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().blockState && player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().airDashState && player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().dashState)
+            Player playerRef = player.GetComponent<Player>();
+            if (playerRef.stateMachine.currentState != playerRef.blockState && playerRef.stateMachine.currentState != playerRef.airDashState && playerRef.stateMachine.currentState != playerRef.dashState && playerRef.stateMachine.currentState != playerRef.hurtState)
             {
-                if (player.GetComponent<Player>().stateMachine.currentState != player.GetComponent<Player>().hurtState)
-                {
-                    player.GetComponent<Player>().BeDamaged(enemyStats.damage.GetValue());
-                    AudioManager.instance.playerSFX(8);
-                }
+                playerRef.BeDamaged(enemyStats.damage.GetValue(), transform.position);
+                AudioManager.instance.playerSFX(16);
             }
-            else if (player.GetComponent<Player>().stateMachine.currentState == player.GetComponent<Player>().blockState && !player.GetComponent<Player>().blockState.isCountering)
+            else if (playerRef.stateMachine.currentState == playerRef.blockState && ((player.transform.position.x < transform.position.x && playerRef.facingDirection == -1) || (player.transform.position.x > transform.position.x && playerRef.facingDirection == 1)))
             {
-                player.GetComponent<Player>().rb.velocity = new Vector2(9f * -player.GetComponent<Player>().facingDirection, rb.velocity.y);
+                playerRef.BeDamaged(enemyStats.damage.GetValue(), transform.position);
+                AudioManager.instance.playerSFX(16);
+            }
+            else if (playerRef.stateMachine.currentState == playerRef.blockState && !playerRef.blockState.isCountering)
+            {
+                playerRef.LightlyPushingPlayer(transform.position);
                 AudioManager.instance.playerSFX(10);
             }
-            else if (player.GetComponent<Player>().stateMachine.currentState == player.GetComponent<Player>().blockState && player.GetComponent<Player>().blockState.isCountering)
-                return;
         }
     }
     public void BeDamaged()

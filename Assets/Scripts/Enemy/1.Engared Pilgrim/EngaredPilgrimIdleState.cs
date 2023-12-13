@@ -12,6 +12,8 @@ public class EngaredPilgrimIdleState : EnemyState
     public override void Start()
     {
         base.Start();
+        if (!enemy.healthCanvas.enabled)
+            enemyStateMachine.ChangeState(enemy.deathState);
         enemyBase.attackedForBeStunned = false;
         if (enemy.PlayerInAttackRange())
         {
@@ -29,7 +31,7 @@ public class EngaredPilgrimIdleState : EnemyState
     {
         base.Update();
         // attack
-        if (enemy.PlayerInAttackRange())
+        if (enemy.PlayerInAttackRange() && enemy.healthCanvas.enabled)
         {
             if (enemy.playerPos.position.x < enemy.transform.position.x && enemy.facingDirection == 1)
                 enemy.Flip();
@@ -39,7 +41,7 @@ public class EngaredPilgrimIdleState : EnemyState
                 enemyStateMachine.ChangeState(enemy.attackState);
         }
         // patroller
-        else if (stateDurationCounter <= 0f)
+        else if (stateDurationCounter <= 0f && enemy.healthCanvas.enabled)
         {
             enemy.Flip();
             enemyStateMachine.ChangeState(enemy.moveState);

@@ -20,6 +20,7 @@ public class Player : Entity
     public PlayerPrimaryAttackState primaryAttackState { get; private set; }
     public PlayerHealingState healingState { get; private set; }
     public PlayerHurtState hurtState { get; private set; }
+    public PlayerDeathState deathState { get; private set; }
     #endregion
     public BoxCollider2D mainBox;
     public BoxCollider2D lieDownBox;
@@ -63,6 +64,7 @@ public class Player : Entity
         primaryAttackState = new PlayerPrimaryAttackState(this, stateMachine, "IsAttacking");
         healingState = new PlayerHealingState(this, stateMachine, "Healing");
         hurtState = new PlayerHurtState(this, stateMachine, "Hurt");
+        deathState = new PlayerDeathState(this, stateMachine, "Dead");
     }
     protected override void Start()
     {
@@ -74,7 +76,7 @@ public class Player : Entity
     }
     protected override void Update()
     {
-        if(!isKnocked)
+        if (!isKnocked)
             base.Update();
         stateMachine.currentState.Update();
         dashCooldownCounter -= Time.deltaTime;
@@ -103,9 +105,9 @@ public class Player : Entity
         }
         else enemyDetected = false;
     }
-    private void AttackTrigger() 
+    private void AttackTrigger()
     {
-        if(enemyDetected)
+        if (enemyDetected)
             AudioManager.instance.playerSFX(9);
         Collider2D[] Enemies = Physics2D.OverlapCircleAll(enemyCheck.position, radiusEnemyDetected, whatIsEnemy);
         foreach (var enemy in Enemies)
@@ -145,17 +147,19 @@ public class Player : Entity
             }
         }
     }
-    public void BeDamaged(int _damage)
+    public void BeDamaged(int _damage, Vector2 enemyPos)
     {
-        if(!isKnocked)
+        if (!isKnocked)
         {
+            rb.velocity = Vector2.zero;
+            FlipOrNotWhenBeDamage(enemyPos);
             stateMachine.ChangeState(hurtState);
             playerStats.TakeDamage(_damage);
         }
     }
     private void FinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     public bool GroundDetected() => Physics2D.BoxCast(mainBox.bounds.center, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
-    
+
     protected override void OnDrawGizmos()
     {
         Gizmos.DrawCube(mainBox.bounds.center - new Vector3(0f, groundCheckDistance, 0f), boxSize);
@@ -163,10 +167,69 @@ public class Player : Entity
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" && stateMachine.currentState != dashState && stateMachine.currentState != airDashState)
+        if (collision.gameObject.tag == "Enemy" && stateMachine.currentState != dashState && stateMachine.currentState != airDashState && !isDead)
         {
             AudioManager.instance.playerSFX(8);
-            BeDamaged(5);
+            BeDamaged(5, collision.gameObject.transform.position);
         }
+        else if (collision.gameObject.tag == "Arrow" && !isDead)
+        {
+            if (blockState.isCountering)
+            {
+                Destroy(collision.gameObject);
+                return;
+            }
+            if (collision.gameObject.transform.position.y < enemyCheck.position.y && !isKnocked)
+            {
+                BeDamaged(30, collision.gameObject.transform.position);
+                AudioManager.instance.playerSFX(16);
+                Destroy(collision.gameObject);
+            }
+            else if (collision.gameObject.transform.position.y > enemyCheck.position.y && stateMachine.currentState != blockState && stateMachine.currentState != dashState)
+            {
+                BeDamaged(30, collision.gameObject.transform.position);
+                AudioManager.instance.playerSFX(16);
+                Destroy(collision.gameObject);
+            }
+            //else if (collision.gameObject.transform.position.y > enemyCheck.position.y && stateMachine.currentState == dashState)
+            //{
+            //    return;
+            //}
+            else if (collision.gameObject.transform.position.y > enemyCheck.position.y && stateMachine.currentState == blockState)
+            {
+                if ((collision.gameObject.transform.position.x < transform.position.x && facingDirection == -1) || (collision.gameObject.transform.position.x > transform.position.x && facingDirection == 1))
+                {
+                    rb.velocity = Vector3.zero;
+                    LightlyPushingPlayer(collision.gameObject.transform.position);
+                    AudioManager.instance.playerSFX(10);
+                    Destroy(collision.gameObject);
+                }
+                else
+                {
+                    BeDamaged(30, collision.gameObject.transform.position);
+                    AudioManager.instance.playerSFX(16);
+                    Destroy(collision.gameObject);
+                }
+            }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Spike")
+        {
+            playerStats.TakeDamage(playerStats.maxHealth.GetValue());
+        }
+       
+    }
+
+    public void LightlyPushingPlayer(Vector2 enemyPos)
+    {
+        FlipOrNotWhenBeDamage(enemyPos);
+        rb.velocity = new Vector2(9f * -facingDirection, rb.velocity.y);
+    }
+    private void FlipOrNotWhenBeDamage(Vector2 enemyPos)
+    {
+        if ((enemyPos.x < transform.position.x && facingDirection == 1) || (enemyPos.x > transform.position.x && facingDirection == -1))
+            Flip();
     }
 }

@@ -554,7 +554,6 @@ GameObject:
   - component: {fileID: 2782376643984165238}
   - component: {fileID: 2782376643984165239}
   - component: {fileID: 912103475}
-  - component: {fileID: 8287598430782209692}
   - component: {fileID: 1480902192}
   m_Layer: 7
   m_Name: 1.Engared Pilgrim
@@ -621,7 +620,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 706996999
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 1687097535, guid: 8aef9821945fec247bafc5cb17eed2b5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -687,6 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab66540681234084bbb3863567d4c64f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
   groundCheckPos: {fileID: 528242572}
   whatIsGround:
     serializedVersion: 2
@@ -704,10 +704,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   playerPos: {fileID: 0}
+  healthCanvas: {fileID: 116005134}
   attackCooldown: 1
   beDamaged: 0
   attackedForBeStunned: 0
   enemyStats: {fileID: 0}
+  canDestroy: 0
+  colTrigger: {fileID: 1862634024}
 --- !u!114 &912103475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,25 +723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cd114647d18db449c3d6eeb0ec367f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8287598430782209692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2782376643984165244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bc3f65204ea11846a17114f64592cf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage:
-    baseValue: 7
-    modifiers: 
-  maxHealth:
-    baseValue: 50
-    modifiers: 
-  currentHealth: 0
 --- !u!114 &1480902192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,3 +742,4 @@ MonoBehaviour:
     baseValue: 50
     modifiers: 
   currentHealth: 0
+  pointGetByThisEnemy: 3
