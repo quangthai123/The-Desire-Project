@@ -212,6 +212,21 @@ public class Player : Entity
                 }
             }
         }
+        else if (collision.gameObject.tag == "Saw" && !isDead && !isKnocked)
+        {
+            if (blockState.isCountering)
+                return;
+            BeDamaged(50, collision.gameObject.transform.position);
+            AudioManager.instance.playerSFX(16);
+        }
+        else if (collision.gameObject.tag == "Magic" && !isDead && !isKnocked)
+        {
+            if (blockState.isCountering)
+                return;
+            BeDamaged(40, collision.gameObject.transform.position);
+            AudioManager.instance.playerSFX(16);
+            Destroy(collision.gameObject);
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
