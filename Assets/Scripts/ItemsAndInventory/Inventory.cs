@@ -15,10 +15,13 @@ public class Inventory : MonoBehaviour
     [Header("Inventory UI")]
     [SerializeField] private Transform inventorySlotParent;
     [SerializeField] private Transform equipmentSlotParent;
+    [SerializeField] private Transform statSlotParent;
+
 
 
     private UI_ItemSlot[] inventoryItemsSlot;
     private UI_EquipmentSlot[] equipmentItemsSlot;
+    private UI_StatSlot[] statSlot;
 
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class Inventory : MonoBehaviour
 
         inventoryItemsSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentItemsSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
+        statSlot = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
 
     }
 
@@ -66,22 +70,30 @@ public class Inventory : MonoBehaviour
         {
             inventoryItemsSlot[i].UpdateSlot(inventoryItems[i]);
         }
+
+        for (int i = 0; i < statSlot.Length; i++)
+        {
+            statSlot[i].UpdateStatValueUI();
+        }
     }
 
     public void AddItem(ItemData _item)
     {
-        if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
+        if (CanAddItem())
         {
-            value.AddStack();
-        }
-        else
-        {
-            InventoryItem newItem = new InventoryItem(_item);
-            inventoryItems.Add(newItem);
-            inventoryDictionary.Add(_item, newItem);
+            if (inventoryDictionary.TryGetValue(_item, out InventoryItem value))
+            {
+                value.AddStack();
+            }
+            else
+            {
+                InventoryItem newItem = new InventoryItem(_item);
+                inventoryItems.Add(newItem);
+                inventoryDictionary.Add(_item, newItem);
 
+            }
+            UpdateSlotUI();
         }
-        UpdateSlotUI();
     }
 
     public void EquipItem(ItemData _item)
@@ -100,6 +112,7 @@ public class Inventory : MonoBehaviour
         if (itemToRemove != null)
         {
             UnequipItem(itemToRemove);
+            AddItem(itemToRemove);
         }
         equipment.Add(newItem);
         equipmentDictionary.Add(newEquipment, newItem);
@@ -112,11 +125,20 @@ public class Inventory : MonoBehaviour
     {
         if (equipmentDictionary.TryGetValue(itemToRemove, out InventoryItem value))
         {
-            AddItem(itemToRemove);
+
             equipment.Remove(value);
             equipmentDictionary.Remove(itemToRemove);
             itemToRemove.RemoveModifiers();
         }
+    }
+
+    public bool CanAddItem()
+    {
+        if (inventoryItems.Count >= inventoryItemsSlot.Length)
+        {
+            return false;
+        }
+        return true;
     }
 
     public void RemoveItem(ItemData _item)
@@ -134,6 +156,19 @@ public class Inventory : MonoBehaviour
             }
         }
         UpdateSlotUI();
+    }
+
+    public ItemData_Equipment GetEquipment(EquipmentType type)
+    {
+        ItemData_Equipment equipedItem = null;
+        foreach (KeyValuePair<ItemData_Equipment, InventoryItem> item in equipmentDictionary)
+        {
+            if (item.Key.equipmentType == type)
+            {
+                equipedItem = item.Key;
+            }
+        }
+        return equipedItem;
     }
 
 }

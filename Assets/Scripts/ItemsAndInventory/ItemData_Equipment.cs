@@ -7,7 +7,8 @@ public enum EquipmentType
     Item1,
     Item2,
     Item3,
-    Item4
+    Item4,
+    Item5
 }
 
 
@@ -15,12 +16,15 @@ public enum EquipmentType
 public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
+    public ItemEffects[] ItemEffects;
 
     [Header("Major stats")]
     public int damage;
     public int mana;
     public int speed;
     public int flask;
+
+    private int minDescriptionLength;
 
     public void AddModifiers()
     {
@@ -67,4 +71,46 @@ public class ItemData_Equipment : ItemData
         }
     }
 
+    public void ItemEffect()
+    {
+        foreach(var item in ItemEffects)
+        {
+            item.ExecuteEffect();
+        }
+    }
+
+    public override string GetDescription()
+    {
+        sb.Length = 0;
+        minDescriptionLength = 0;
+        AddItemDescription(damage, "Damage");
+        AddItemDescription(mana, "Mana");
+        AddItemDescription(speed, "Speed");
+        AddItemDescription(flask, "Increase HP healing effect");
+        if (minDescriptionLength < 5)
+        {
+            for(int i = 0; i < 5 - minDescriptionLength; i++)
+            {
+                sb.AppendLine();
+                sb.Append("");
+            }
+        }
+        return sb.ToString();
+    }
+
+    private void AddItemDescription(int _value, string _name)
+    {
+        if (_value != 0)
+        {
+            if (sb.Length > 0)
+            {
+                sb.AppendLine();
+            }
+            if (_value > 0)
+            {
+                sb.Append(_name + ":" + _value);
+            }
+            minDescriptionLength++;
+        }
+    }
 }

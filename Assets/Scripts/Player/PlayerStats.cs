@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum StatType
+{
+    hp,
+    mana,
+    damage,
+    healthInFlask
+}
+
 public class PlayerStats : CharacterStats
 {
     public Stat maxMana;
@@ -41,6 +49,19 @@ public class PlayerStats : CharacterStats
     {
         healthInFlask.AddModifier(heal);
     }
+    public void DecreaseHealthInFlask(int heal)
+    {
+        healthInFlask.RemoveModifier(heal);
+    }
+    public void IncreaseDamage(int damage1)
+    {
+        damage.AddModifier(damage1);
+    }
+    public void DecreaseDamage(int damage1)
+    {
+        damage.RemoveModifier(damage1);
+    }
+
     public void Healing()
     {
         currentFlask--;
@@ -58,6 +79,10 @@ public class PlayerStats : CharacterStats
     public void IncreaseMaxMana(int manaToAdd)
     {
         maxMana.AddModifier(manaToAdd);
+    }
+    public void DecreaseMaxMana(int manaToAdd)
+    {
+        maxMana.RemoveModifier(manaToAdd);
     }
     public void IncreaseMaxFlask(int flaskToAdd)
     {
@@ -81,5 +106,13 @@ public class PlayerStats : CharacterStats
     public void ResetGameAfterDied()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public Stat GetStat(StatType _statType) {
+        if (_statType == StatType.hp) return maxHealth;
+        if (_statType == StatType.mana) return maxHealth;
+        if (_statType == StatType.damage) return damage;
+        if (_statType == StatType.healthInFlask) return healthInFlask;
+        return null;
     }
 }

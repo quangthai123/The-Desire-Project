@@ -7,6 +7,8 @@ public class ItemObject : MonoBehaviour
     private SpriteRenderer sr;
 
     [SerializeField] private ItemData itemData;
+    [SerializeField] private Rigidbody2D rb;
+
 
 
     private void OnValidate()
@@ -18,6 +20,12 @@ public class ItemObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(!Inventory.instance.CanAddItem()&& itemData.itemType == ItemType.Equipment)
+        {
+            rb.velocity=new Vector2(0,7);
+            return;
+        }
+
         if (collision.GetComponent<Player>() != null)
         {
             Inventory.instance.AddItem(itemData);
