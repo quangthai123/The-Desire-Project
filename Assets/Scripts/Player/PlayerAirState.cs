@@ -25,15 +25,15 @@ public class PlayerAirState : PlayerState
             rb.velocity = new Vector2(xInput * player.speed * 0.75f, rb.velocity.y);
         if (player.GroundDetected())
             stateMachine.ChangeState(player.idleState);
-        if (Input.GetKeyDown(KeyCode.Space) && !player.doubleJumped)
+        if (Input.GetKeyDown(KeyCode.Space) && !player.doubleJumped && player.playerStats.skillsChecker[0]==1)
         {
             stateMachine.ChangeState(player.doubleJumpState);
         }
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !player.airDashed)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !player.airDashed && player.playerStats.skillsChecker[2] == 1)
         {
             stateMachine.ChangeState(player.airDashState);
         }
-        if (player.WallDetected())
+        if (player.WallDetected() && player.playerStats.skillsChecker[4]==1)
             stateMachine.ChangeState(player.wallSlideState);
         if (Input.GetKeyDown(KeyCode.K))
             stateMachine.ChangeState(player.primaryAttackState);

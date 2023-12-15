@@ -46,5 +46,7 @@ public class EngaredPilgrimIdleState : EnemyState
             enemy.Flip();
             enemyStateMachine.ChangeState(enemy.moveState);
         }
+        if (!enemy.healthCanvas.enabled)
+            enemyStateMachine.ChangeState(enemy.deathState);
     }
 }

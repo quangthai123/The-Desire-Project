@@ -27,11 +27,23 @@ public class PlayerDoubleJumpState : PlayerState
             rb.velocity = new Vector2(xInput * player.speed * 0.75f, rb.velocity.y);
         if (rb.velocity.y < -.1f)
             stateMachine.ChangeState(player.airState);
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !player.airDashed)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !player.airDashed && player.playerStats.skillsChecker[2] == 1)
         {
             stateMachine.ChangeState(player.airDashState);
         }
         if (Input.GetKeyDown(KeyCode.K))
             stateMachine.ChangeState(player.primaryAttackState);
+        if (player.playerStats.skillsChecker[3] == 1)
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    if (player.playerStats.currentMana >= 40)
+                        stateMachine.ChangeState(player.attackFromAirState);
+                    else AudioManager.instance.playerSFX(13);
+                }
+            }
+        }
     }
 }

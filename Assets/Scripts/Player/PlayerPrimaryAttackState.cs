@@ -63,21 +63,4 @@ public class PlayerPrimaryAttackState : PlayerState
             stateMachine.ChangeState(player.dashState);
         }
     }
-
-    public void DamageEnemy()
-    {
-        if (comboCounter==0)
-        {
-            Debug.Log("Damage on Enemy: 20");
-        } else if(comboCounter==1)
-        {
-            Debug.Log("Damage on Enemy: 25");
-        } else if(comboCounter==2)
-        {
-            Debug.Log("Damage on Enemy: 35");
-        } else if(comboCounter==3)
-        {
-            Debug.Log("Damage on Enemy: 55");
-        }
-    }
 }

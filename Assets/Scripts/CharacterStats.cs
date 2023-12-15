@@ -14,10 +14,6 @@ public class CharacterStats : MonoBehaviour
     {
         currentHealth = maxHealth.GetValue();
     }
-    void Update()
-    {
-        
-    }
     public virtual void TakeDamage(int _damage)
     {
         currentHealth -= _damage;

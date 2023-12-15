@@ -704,6 +704,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   playerPos: {fileID: 0}
+  playerCheckPos: {fileID: 2782376643984165233}
   healthCanvas: {fileID: 116005134}
   attackCooldown: 1
   beDamaged: 0

@@ -27,11 +27,11 @@ public class PlayerJumpState : PlayerState
             rb.velocity = new Vector2(xInput * player.speed * 0.75f, rb.velocity.y);
         if (rb.velocity.y < -.1f)
             stateMachine.ChangeState(player.airState);
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && player.playerStats.skillsChecker[0] == 1)
         {
             stateMachine.ChangeState(player.doubleJumpState);
         }
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftShift) && player.playerStats.skillsChecker[2] == 1)
         {
             stateMachine.ChangeState(player.airDashState);
         }

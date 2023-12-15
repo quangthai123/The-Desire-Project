@@ -44,6 +44,7 @@ public class PlayerBlockState : PlayerState
                     if(enemy.GetComponentInParent<Enemy>().attackedForBeStunned)
                     {
                         isCountering = true;
+                        rb.velocity = Vector2.zero;
                         stateDurationCounter = 3f;
                         player.anim.SetBool("SuccessfulCounter", isCountering);
                         AudioManager.instance.playerSFX(11);
