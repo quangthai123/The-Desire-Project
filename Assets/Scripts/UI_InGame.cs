@@ -12,6 +12,8 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private Image[] flaskUI;
     [SerializeField] private Image[] emptyFlaskUI;
     [SerializeField] private TextMeshProUGUI extinctPointText;
+
+    [SerializeField] private Image dashImage;
     private void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -23,6 +25,11 @@ public class UI_InGame : MonoBehaviour
         UpdateManaUI();
         UpdateFlaskUI();
         UpdateExtinctPointText();
+
+        if(Input.GetKeyDown(KeyCode.LeftShift)) {
+            Debug.Log("1");
+            SetCooldownOf(dashImage);
+        }
     }
     private void UpdateHealthUI()
     {
@@ -56,5 +63,14 @@ public class UI_InGame : MonoBehaviour
     private void UpdateExtinctPointText()
     {
         extinctPointText.text = PlayerPrefs.GetInt("extinct") + "";
+    }
+
+    private void SetCooldownOf(Image _image)
+    {
+        Debug.Log(1);
+        if (_image.fillAmount <= 0)
+        {
+            _image.fillAmount = 1;
+        }
     }
 }
