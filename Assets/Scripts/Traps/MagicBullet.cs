@@ -13,7 +13,7 @@ public class MagicBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(transform.right * speed * Time.deltaTime, 0f);
+            transform.Translate(transform.right * speed * Time.deltaTime, 0f);
     }
     
 }

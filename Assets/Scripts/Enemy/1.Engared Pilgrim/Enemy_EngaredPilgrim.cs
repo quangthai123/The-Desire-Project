@@ -43,7 +43,7 @@ public class Enemy_EngaredPilgrim : Enemy
         }
         if (beDamaged)
         {
-            if (stateMachine.currentState != attackState && stateMachine.currentState != stunnedState)
+            if (stateMachine.currentState != stunnedState)
                 stateMachine.ChangeState(hurtState);
         }
     }

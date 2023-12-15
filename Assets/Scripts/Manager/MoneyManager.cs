@@ -8,6 +8,7 @@ public class MoneyManager : MonoBehaviour
     private int extinctPoint;
     private void Start()
     {
+        //PlayerPrefs.SetInt("extinct", 0);
         extinctPoint = PlayerPrefs.GetInt("extinct");
     }
     private void Awake()
@@ -26,5 +27,9 @@ public class MoneyManager : MonoBehaviour
     {
         extinctPoint -= point;
         PlayerPrefs.SetInt("extinct", extinctPoint);
+    }
+    public int GetExtinctPoint()
+    {
+        return this.extinctPoint;
     }
 }

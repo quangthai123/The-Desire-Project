@@ -11,23 +11,42 @@ public class PlayerStats : CharacterStats
     public int currentMana;
     public int maxFlask;
     public int currentFlask;
+    public List<int> skillsChecker;
     private Player playerStates;
+    public bool gotDamageData;
     protected override void Start()
     {
         base.Start();
+        gotDamageData = false;
+        //for (int i = 0; i < skillsChecker.Count; i++)
+        //{
+        //    PlayerPrefs.SetInt("Skill" + i.ToString(), 0);
+        //}
         playerStates = GetComponent<Player>();
         currentMana = 0;
         currentFlask = currentMaxFlask.GetValue();
     }
+    private void Update()
+    {
+        // lay du lieu skills tu playerprefs
+        for(int i=0; i<skillsChecker.Count; i++)
+        {
+            skillsChecker[i] = PlayerPrefs.GetInt("Skill"+i.ToString());
+        }
+        // lay du lieu damage tu skill checker
+        if (!gotDamageData)
+        {
+            for (int i = 0; i < skillsChecker.Count; i++)
+            {
+                if (skillsChecker[i] == 1)
+                    damage.modifiers[i] = i + 1;
+            }
+            gotDamageData = true;
+        }
+    }
     public void DecreaseManaFromSkills(int mana)
     {
-        if (currentMana < mana)
-        {
-            // AudioManager (am thanh het mana)
-            return;
-        }
-        else
-            currentMana -= mana;
+        currentMana -= mana;
     }
     public void IncreaseManaFromAttack(int mana)
     {
@@ -81,5 +100,9 @@ public class PlayerStats : CharacterStats
     public void ResetGameAfterDied()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void IncreaseDamage(int damageToAdd)
+    {
+        damage.AddModifier(damageToAdd);
     }
 }

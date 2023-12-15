@@ -13,6 +13,7 @@ public class Enemy : Entity
     [SerializeField] protected float detectPlayerRadius;
     [SerializeField] protected LayerMask playerLayer;
     [HideInInspector] public Transform playerPos;
+    [SerializeField] protected Transform playerCheckPos;
     public Canvas healthCanvas;
     [Header("Attack Infor")]
     public float attackCooldown;
@@ -29,6 +30,8 @@ public class Enemy : Entity
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
+        if (playerCheckPos == null)
+            playerCheckPos = transform;
     }
     protected override void Start()
     {
@@ -41,15 +44,16 @@ public class Enemy : Entity
         base.Update();
         stateMachine.currentState.Update();
     }
-    public bool PlayerInAttackRange() => Physics2D.OverlapCircle(transform.position, detectPlayerRadius, playerLayer);
+    public bool PlayerInAttackRange() => Physics2D.OverlapCircle(playerCheckPos.position, detectPlayerRadius, playerLayer);
     protected override void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, detectPlayerRadius);
+        base.OnDrawGizmos();
+         Gizmos.DrawWireSphere(playerCheckPos.position, detectPlayerRadius);
     }
     public void SetEventOnFinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     private void AttackTrigger()
     {
-        Collider2D player = Physics2D.OverlapCircle(transform.position, detectPlayerRadius, playerLayer);
+        Collider2D player = Physics2D.OverlapCircle(playerCheckPos.position, detectPlayerRadius, playerLayer);
         if (player && !player.GetComponent<Player>().isDead)
         {
             Player playerRef = player.GetComponent<Player>();
@@ -65,6 +69,7 @@ public class Enemy : Entity
             }
             else if (playerRef.stateMachine.currentState == playerRef.blockState && !playerRef.blockState.isCountering)
             {
+                playerRef.isKnocked = true;
                 playerRef.LightlyPushingPlayer(transform.position);
                 AudioManager.instance.playerSFX(10);
             }
@@ -94,5 +99,15 @@ public class Enemy : Entity
     protected void AttackForBeStunned() 
     {
         attackedForBeStunned = true;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 10 && !isDead)
+        {
+            Destroy(collision.gameObject);
+            BeDamaged();
+            enemyStats.TakeDamage(playerPos.gameObject.GetComponent<Player>().playerStats.damage.GetValue()*3);
+            AudioManager.instance.playerSFX(20);
+        }
     }
 }

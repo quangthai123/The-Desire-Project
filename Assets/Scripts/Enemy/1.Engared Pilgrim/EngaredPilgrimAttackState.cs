@@ -23,7 +23,9 @@ public class EngaredPilgrimAttackState : EnemyState
     public override void Update()
     {
         base.Update();
-        if (finishAnim)
+        if (finishAnim || enemy.isDead)
             enemyStateMachine.ChangeState(enemy.idleState);
+        if (!enemy.healthCanvas.enabled)
+            enemyStateMachine.ChangeState(enemy.deathState);
     }
 }

@@ -21,6 +21,8 @@ public class Player : Entity
     public PlayerHealingState healingState { get; private set; }
     public PlayerHurtState hurtState { get; private set; }
     public PlayerDeathState deathState { get; private set; }
+    public PlayerAttackFromAirState attackFromAirState { get; private set; }
+    public PlayerAttackGroundedState attackGroundedState { get; private set; }
     #endregion
     public BoxCollider2D mainBox;
     public BoxCollider2D lieDownBox;
@@ -48,6 +50,7 @@ public class Player : Entity
     public float knockbackDuration;
     public bool isKnocked = false;
     public PlayerStats playerStats;
+    [SerializeField] private Transform bullet;
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
@@ -65,6 +68,8 @@ public class Player : Entity
         healingState = new PlayerHealingState(this, stateMachine, "Healing");
         hurtState = new PlayerHurtState(this, stateMachine, "Hurt");
         deathState = new PlayerDeathState(this, stateMachine, "Dead");
+        attackFromAirState = new PlayerAttackFromAirState(this, stateMachine, "AirAttack");
+        attackGroundedState = new PlayerAttackGroundedState(this, stateMachine, "GroundedAttack");
     }
     protected override void Start()
     {
@@ -93,7 +98,23 @@ public class Player : Entity
         // Save game de hoi toan bo hp, mana va binh mau
         if (Input.GetKeyDown(KeyCode.R))
             playerStats.HealingAll();
+        CheckManaAndShootingMagic();
+    }
 
+    private void CheckManaAndShootingMagic()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && playerStats.skillsChecker[1] == 1)
+        {
+            if (playerStats.currentMana >= 10)
+            {
+                Transform newBullet = Instantiate(bullet, enemyCheck.position, Quaternion.identity);
+                if (facingDirection == -1)
+                    newBullet.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                playerStats.currentMana -= 10;
+            }
+            else
+                AudioManager.instance.playerSFX(13);
+        }
     }
 
     private void DetectEnemy()
@@ -107,14 +128,14 @@ public class Player : Entity
     }
     private void AttackTrigger()
     {
-        if (enemyDetected)
-            AudioManager.instance.playerSFX(9);
         Collider2D[] Enemies = Physics2D.OverlapCircleAll(enemyCheck.position, radiusEnemyDetected, whatIsEnemy);
         foreach (var enemy in Enemies)
         {
-            if (enemy.GetComponentInParent<Enemy>() != null)
+            if (enemy.GetComponentInParent<Enemy>() != null && !enemy.GetComponentInParent<Enemy>().isDead)
             {
-                enemy.GetComponentInParent<Enemy>().BeDamaged();
+                AudioManager.instance.playerSFX(9);
+                if(stateMachine.currentState == primaryAttackState && primaryAttackState.comboCounter >= 2)
+                    enemy.GetComponentInParent<Enemy>().BeDamaged();
                 playerStats.IncreaseManaFromAttack(1);
                 if (stateMachine.currentState != blockState)
                 {
@@ -224,7 +245,7 @@ public class Player : Entity
             if (blockState.isCountering)
                 return;
             BeDamaged(40, collision.gameObject.transform.position);
-            AudioManager.instance.playerSFX(16);
+            AudioManager.instance.playerSFX(20);
             Destroy(collision.gameObject);
         }
     }
@@ -240,7 +261,7 @@ public class Player : Entity
     public void LightlyPushingPlayer(Vector2 enemyPos)
     {
         FlipOrNotWhenBeDamage(enemyPos);
-        rb.velocity = new Vector2(9f * -facingDirection, rb.velocity.y);
+        rb.velocity = new Vector2(8f * -facingDirection, rb.velocity.y);
     }
     private void FlipOrNotWhenBeDamage(Vector2 enemyPos)
     {

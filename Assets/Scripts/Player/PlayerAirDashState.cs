@@ -30,7 +30,7 @@ public class PlayerAirDashState : PlayerState
             rb.velocity = new Vector2(player.dashSpeed * 1.2f * player.facingDirection, 0f);
         }
         else stateMachine.ChangeState(player.airState);
-        if (player.WallDetected())
+        if (player.WallDetected() && player.playerStats.skillsChecker[4] == 1)
             stateMachine.ChangeState(player.wallSlideState);
     }
 }
