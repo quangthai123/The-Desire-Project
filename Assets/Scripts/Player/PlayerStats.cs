@@ -20,6 +20,11 @@ public class PlayerStats : CharacterStats
     public int maxFlask;
     public int currentFlask;
     private Player playerStates;
+
+    public List<int> skillsChecker;
+    public bool gotDamageData;
+
+
     protected override void Start()
     {
         base.Start();
@@ -27,6 +32,25 @@ public class PlayerStats : CharacterStats
         currentMana = 0;
         currentFlask = currentMaxFlask.GetValue();
     }
+    private void Update()
+    {
+        // lay du lieu skills tu playerprefs
+        for (int i = 0; i < skillsChecker.Count; i++)
+        {
+            skillsChecker[i] = PlayerPrefs.GetInt("Skill" + i.ToString());
+        }
+        // lay du lieu damage tu skill checker
+        if (!gotDamageData)
+        {
+            for (int i = 0; i < skillsChecker.Count; i++)
+            {
+                if (skillsChecker[i] == 1)
+                    damage.modifiers[i] = i + 1;
+            }
+            gotDamageData = true;
+        }
+    }
+
     public void DecreaseManaFromSkills(int mana)
     {
         if (currentMana < mana)
