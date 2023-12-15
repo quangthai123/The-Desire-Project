@@ -9,6 +9,8 @@ TagManager:
   - Spike
   - Arrow
   - BreakArrow
+  - Saw
+  - Magic
   layers:
   - Default
   - TransparentFX
