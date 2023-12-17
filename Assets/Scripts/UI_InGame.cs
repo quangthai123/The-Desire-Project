@@ -14,9 +14,21 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI extinctPointText;
 
     [SerializeField] private Image dashImage;
+    [SerializeField] private Image skill1;
+    [SerializeField] private Image skill2;
+    [SerializeField] private Image skill3;
+    [SerializeField] private Image skill4;
+    [SerializeField] private Image skill5;
+
+    [SerializeField] private TextMeshProUGUI currentSouls;
+    [SerializeField] private float dashCooldown;
+    private Player player;
     private void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        dashCooldown = player.dashCooldown;
     }
 
     private void Update()
@@ -26,10 +38,12 @@ public class UI_InGame : MonoBehaviour
         UpdateFlaskUI();
         UpdateExtinctPointText();
 
-        if(Input.GetKeyDown(KeyCode.LeftShift)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             Debug.Log("1");
             SetCooldownOf(dashImage);
         }
+        CheckCooldownOf(dashImage,dashCooldown);
     }
     private void UpdateHealthUI()
     {
@@ -43,15 +57,15 @@ public class UI_InGame : MonoBehaviour
     }
     private void UpdateFlaskUI()
     {
-        for(int i=0; i<playerStats.currentFlask; i++)
+        for (int i = 0; i < playerStats.currentFlask; i++)
         {
             flaskUI[i].enabled = true;
         }
-        for(int i=playerStats.currentFlask; i<flaskUI.Length; i++)
-        { 
-            flaskUI[i].enabled = false;            
+        for (int i = playerStats.currentFlask; i < flaskUI.Length; i++)
+        {
+            flaskUI[i].enabled = false;
         }
-        for(int i=0; i<playerStats.currentMaxFlask.GetValue(); i++)
+        for (int i = 0; i < playerStats.currentMaxFlask.GetValue(); i++)
         {
             emptyFlaskUI[i].enabled = true;
         }
@@ -67,10 +81,17 @@ public class UI_InGame : MonoBehaviour
 
     private void SetCooldownOf(Image _image)
     {
-        Debug.Log(1);
+        
         if (_image.fillAmount <= 0)
         {
             _image.fillAmount = 1;
+        }
+    }
+    public void CheckCooldownOf(Image _image, float _cooldown)
+    {
+        if(_image.fillAmount>0)
+        {
+            _image.fillAmount -= 1 / _cooldown * Time.deltaTime;
         }
     }
 }

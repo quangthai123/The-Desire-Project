@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour,ISaveManager
 {
     public static Inventory instance;
 
@@ -171,4 +171,19 @@ public class Inventory : MonoBehaviour
         return equipedItem;
     }
 
+    public void LoadData(GameData _data)
+    {
+        Debug.Log("load data");
+    }   
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.inventory.Clear();
+        Debug.Log(_data.inventory.Count);
+        foreach(KeyValuePair<ItemData,InventoryItem> pair in inventoryDictionary)
+        {   
+            Debug.Log(pair.Key.itemId+" "+ pair.Value.stackSize);
+            _data.inventory.Add(pair.Key.itemId, pair.Value.stackSize); 
+        }
+    }
 }
