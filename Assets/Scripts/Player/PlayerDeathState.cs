@@ -25,8 +25,6 @@ public class PlayerDeathState : PlayerState
     public override void Update()
     {
         base.Update();
-        //rb.velocity = new Vector2(0f, rb.velocity.y);
-        //if(finishAnim)
-        //    player.playerStats.ResetGameAfterDied();
+      
     }
 }

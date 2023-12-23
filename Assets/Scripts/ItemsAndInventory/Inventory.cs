@@ -184,8 +184,7 @@ public class Inventory : MonoBehaviour,ISaveManager
         {
             foreach (var item in GetItemDataBase())
             {
-                Debug.Log(item.itemId);
-                Debug.Log(pair.Key);
+              
                 if (item != null && item.itemId == pair.Key)
                 {
                     Debug.Log(1);

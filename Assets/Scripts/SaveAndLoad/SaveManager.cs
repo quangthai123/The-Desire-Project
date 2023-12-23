@@ -55,6 +55,7 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.SaveData(ref gameData);
         }
+
         
         dataHandler.Save(gameData);
     }

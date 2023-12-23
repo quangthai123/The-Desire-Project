@@ -31,8 +31,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private Boss bossRef;
     [SerializeField] private GameObject bossHealthUI;
 
-    private Player player;
-    private float dashCooldown;
+   
     private void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();

@@ -6,8 +6,7 @@ using UnityEngine;
 public class UI : MonoBehaviour
 {
     public UI_FadingScrene fadeScreen;
-    private PlayerStats playerStats;
-
+ 
     [SerializeField] private GameObject endText;
     [SerializeField] private GameObject restartBtn;
     [Space]
