@@ -5,9 +5,9 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public Rigidbody2D rb { get; private set; }
-    public Animator anim { get; private set; }
+    public Animator anim;
     public EntityFx fx { get; private set; }
-    public int facingDirection { get; private set; }
+    public int facingDirection;
     public System.Action onFlipped;
     public bool isDead = false;
     [Header("Collision Infor")]

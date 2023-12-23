@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_InGame : MonoBehaviour
@@ -23,6 +25,14 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentSouls;
     [SerializeField] private float dashCooldown;
     private Player player;
+    [Header("Boss Health UI")]
+    [SerializeField] private EnemyStats bossStats;
+    [SerializeField] private Slider bossHealthSlider;
+    [SerializeField] private Boss bossRef;
+    [SerializeField] private GameObject bossHealthUI;
+
+    private Player player;
+    private float dashCooldown;
     private void Start()
     {
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -38,6 +48,10 @@ public class UI_InGame : MonoBehaviour
         UpdateFlaskUI();
         UpdateExtinctPointText();
         UpdateSkill();
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            UpdateBossHealthUI();
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -45,6 +59,14 @@ public class UI_InGame : MonoBehaviour
             SetCooldownOf(dashImage);
         }
         CheckCooldownOf(dashImage,dashCooldown);
+        CheckCooldownOf(dashImage, dashCooldown);
+    }
+    private void UpdateBossHealthUI()
+    {
+        if (bossRef.startBossCombat) bossHealthUI.SetActive(true);
+        if (!bossRef.colTrigger) bossHealthUI.SetActive(false);
+        bossHealthSlider.maxValue = bossStats.maxHealth.GetValue();
+        bossHealthSlider.value = bossStats.currentHealth;
     }
     private void UpdateHealthUI()
     {
@@ -83,6 +105,7 @@ public class UI_InGame : MonoBehaviour
     private void SetCooldownOf(Image _image)
     {
         
+
         if (_image.fillAmount <= 0)
         {
             _image.fillAmount = 1;
@@ -91,6 +114,7 @@ public class UI_InGame : MonoBehaviour
     public void CheckCooldownOf(Image _image, float _cooldown)
     {
         if(_image.fillAmount>0)
+        if (_image.fillAmount > 0)
         {
             _image.fillAmount -= 1 / _cooldown * Time.deltaTime;
         }
