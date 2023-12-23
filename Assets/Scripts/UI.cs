@@ -15,6 +15,8 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject optionUI;
     [SerializeField] private GameObject inGameUI;
 
+    public GameObject ccsad;
+        
 
     public UI_ItemToolTip itemToolTip;
     public UI_SkillToolTip skillToolTip;
@@ -84,13 +86,13 @@ public class UI : MonoBehaviour
     public void SwitchOnEndScreen()
     {
         SwitchTo(null);
-        fadeScreen.FadeOut();
         StartCoroutine(EndScreenCorutione());
     }
 
     IEnumerator EndScreenCorutione()
     {
         yield return new WaitForSeconds(1.5f);
+       
         endText.SetActive(true);
         yield return new WaitForSeconds(1);
         restartBtn.SetActive(true);

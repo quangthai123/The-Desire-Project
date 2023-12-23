@@ -536,7 +536,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 706996999
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 597177219, guid: 2c1d078d798d11641b48113a355e5952, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d8d2d438f493046aff75cc226b5ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   facingDirection: 0
   isDead: 0
   groundCheckPos: {fileID: 8603974660636283056}
@@ -608,7 +609,7 @@ MonoBehaviour:
     baseValue: 200
     modifiers: 
   currentHealth: 0
-  pointGetByThisEnemy: 15
+  pointGetByThisEnemy: 20
 --- !u!114 &8603974660844748683
 MonoBehaviour:
   m_ObjectHideFlags: 0

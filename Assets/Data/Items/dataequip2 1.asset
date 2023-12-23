@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fabf02e7258d80d469304c2fc9923b49, type: 3}
-  m_Name: dataequip2
+  m_Name: dataequip2 1
   m_EditorClassIdentifier: 
   itemType: 1
-  name: "Nh\u1EABn kim c\u01B0\u01A1ng"
-  icon: {fileID: -702169387, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  itemId: 421b57f2f943bcb4c8354a5ad7642881
-  equipmentType: 4
+  name: "Gi\xE0y du m\u1EE5c"
+  icon: {fileID: 133078613, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: 8810eb95e801e044cb36a1df8c61b382
+  equipmentType: 1
   ItemEffects: []
-  damage: 5
-  mana: 20
-  speed: 1
+  damage: 0
+  mana: 50
+  speed: 2
   flask: 0
-  hp: 100
+  hp: 0

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour, ISaveManager
     public static GameManager instance;
     [SerializeField] private Checkpoint[] checkpoints;
 
+    public string closestCheckpoing;
+
     public void LoadData(GameData _data)
     {
         foreach (KeyValuePair<string, bool> pair in _data.checkpoints)
@@ -23,9 +25,16 @@ public class GameManager : MonoBehaviour, ISaveManager
                 }
             }
         }
+        closestCheckpoing = _data.cloestCheckpointId;
+        Debug.Log(checkpoints.Length);
+        Invoke("PlacePlayerToClosetCheckPoint", .05f);
+    }
+
+    private void PlacePlayerToClosetCheckPoint()
+    {
         foreach (Checkpoint check in checkpoints)
         {
-            if (_data.cloestCheckpointId == check.checkpointId)
+            if (closestCheckpoing == check.checkpointId)
             {
                 PlayerManager.instance.player.transform.position = check.transform.position;
             }
@@ -34,10 +43,9 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     public void SaveData(ref GameData _data)
     {
-        if (FindClosestCheckpoint().checkpointId != null)
+        if (FindClosestCheckpoint() != null)
         {
             _data.cloestCheckpointId = FindClosestCheckpoint().checkpointId;
-
         }
         _data.checkpoints.Clear();
         foreach (Checkpoint checkpoint in checkpoints)
@@ -61,6 +69,7 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     public void RestartScene()
     {
+        SaveManager.instance.SaveGame();
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }

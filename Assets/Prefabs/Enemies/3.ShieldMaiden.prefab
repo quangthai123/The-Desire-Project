@@ -620,7 +620,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 706996999
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 935482523, guid: 55e1b98927a375c4ba9270478f82c890, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -725,7 +725,7 @@ MonoBehaviour:
     baseValue: 300
     modifiers: 
   currentHealth: 0
-  pointGetByThisEnemy: 3
+  pointGetByThisEnemy: 30
 --- !u!95 &8112147426248800686
 Animator:
   serializedVersion: 4

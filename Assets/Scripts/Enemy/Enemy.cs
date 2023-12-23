@@ -63,6 +63,7 @@ public class Enemy : Entity
             Player playerRef = player.GetComponent<Player>();
             if (playerRef.stateMachine.currentState != playerRef.blockState && playerRef.stateMachine.currentState != playerRef.airDashState && playerRef.stateMachine.currentState != playerRef.dashState && playerRef.stateMachine.currentState != playerRef.hurtState)
             {
+               
                 playerRef.BeDamaged(enemyStats.damage.GetValue(), transform.position);
                 AudioManager.instance.playerSFX(16);
             }

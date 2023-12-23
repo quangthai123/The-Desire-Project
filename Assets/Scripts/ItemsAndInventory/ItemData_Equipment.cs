@@ -23,6 +23,7 @@ public class ItemData_Equipment : ItemData
     public int mana;
     public int speed;
     public int flask;
+    public int hp;
 
     private int minDescriptionLength;
 
@@ -40,6 +41,7 @@ public class ItemData_Equipment : ItemData
             playerStats.IncreaseDamage(damage);
             player.speed += speed;
             player.speed = Mathf.Max(0, player.speed);
+            playerStats.IncreaseMaxHealth(hp);
             playerStats.IncreaseHealthInFlask(flask);
             
         }
@@ -63,6 +65,8 @@ public class ItemData_Equipment : ItemData
             playerStats.DecreaseDamage(damage);
             player.speed -= speed;
             player.speed = Mathf.Max(0, player.speed);
+            playerStats.DecreaseMaxHealth(hp);
+
             playerStats.DecreaseHealthInFlask(flask);
         }
         else

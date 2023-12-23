@@ -187,7 +187,7 @@ public class Inventory : MonoBehaviour,ISaveManager
               
                 if (item != null && item.itemId == pair.Key)
                 {
-                    Debug.Log(1);
+                  
                     InventoryItem itemToLoad = new InventoryItem(item);
                     itemToLoad.stackSize = pair.Value;
 

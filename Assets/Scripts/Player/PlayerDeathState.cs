@@ -25,6 +25,6 @@ public class PlayerDeathState : PlayerState
     public override void Update()
     {
         base.Update();
-      
+        rb.velocity = Vector3.zero;
     }
 }

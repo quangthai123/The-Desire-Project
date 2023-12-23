@@ -111,6 +111,11 @@ public class PlayerStats : CharacterStats, ISaveManager
         maxHealth.AddModifier(healthToAdd);
         currentHealth = maxHealth.GetValue();
     }
+    public void DecreaseMaxHealth(int healthToAdd)
+    {
+        maxHealth.RemoveModifier(healthToAdd);
+        currentHealth = maxHealth.GetValue();
+    }
     public void IncreaseMaxMana(int manaToAdd)
     {
         maxMana.AddModifier(manaToAdd);

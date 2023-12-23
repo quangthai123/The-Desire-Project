@@ -89,7 +89,7 @@ public class Player : Entity
         if (CheckGroundAction() && rb.velocity.y < -1f)
             AudioManager.instance.playerSFX(4);
 
-    
+
         CheckManaAndShootingMagic();
     }
 
@@ -126,7 +126,7 @@ public class Player : Entity
             if (enemy.GetComponentInParent<Enemy>() != null && !enemy.GetComponentInParent<Enemy>().isDead)
             {
                 AudioManager.instance.playerSFX(9);
-                if(stateMachine.currentState == primaryAttackState && primaryAttackState.comboCounter >= 2)
+                if (stateMachine.currentState == primaryAttackState && primaryAttackState.comboCounter >= 2)
                     enemy.GetComponentInParent<Enemy>().BeDamaged();
                 playerStats.IncreaseManaFromAttack(1);
                 if (stateMachine.currentState != blockState)
@@ -247,7 +247,7 @@ public class Player : Entity
         {
             playerStats.TakeDamage(playerStats.maxHealth.GetValue());
         }
-       
+
     }
 
     public void LightlyPushingPlayer(Vector2 enemyPos)

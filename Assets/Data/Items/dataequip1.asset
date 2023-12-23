@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: dataequip1
   m_EditorClassIdentifier: 
   itemType: 1
-  name: buff
-  icon: {fileID: 21300000, guid: 94f8aeb2133dcfc41a6fd4475511d69b, type: 3}
+  name: "Ki\u1EBFm \u0111\xF9i g\xE0"
+  icon: {fileID: -162292818, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: 3cef00c1f13254248a6c44a50dc5e897
   equipmentType: 0
-  damage: 1000
-  mana: 0
-  speed: 4
+  ItemEffects: []
+  damage: 100
+  mana: 60
+  speed: 0
   flask: 0
+  hp: 0

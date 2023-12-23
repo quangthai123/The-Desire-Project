@@ -77,8 +77,8 @@ public class Boss : Enemy
             AudioManager.instance.playerSFX(22);
             float xPos = -13f;
             for (int i = 0; i < 6; i++)
-            {             
-                Instantiate(evilHandPrefab, new Vector2(xPos, -.75f), Quaternion.identity);
+            {
+                Instantiate(evilHandPrefab, new Vector2(transform.position.x + xPos, -4f), Quaternion.identity);
                 if (xPos == -3)
                     xPos = 3;
                 else xPos += 5;
