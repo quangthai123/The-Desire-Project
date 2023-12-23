@@ -11,8 +11,8 @@ public class PlayerDeathState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        AudioManager.instance.playBgm = false;
         AudioManager.instance.playerSFX(14);
-        AudioManager.instance.StopAllBGM();
         player.isKnocked = true;
     }
 

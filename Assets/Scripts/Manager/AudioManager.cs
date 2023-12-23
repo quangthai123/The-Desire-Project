@@ -19,7 +19,9 @@ public class AudioManager : MonoBehaviour
     private void Update()
     {
         if(!playBgm)
+        {
             StopAllBGM();
+        }
         else
         {
             if (!bgm[bgmIndex].isPlaying)

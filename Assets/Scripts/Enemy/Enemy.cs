@@ -51,8 +51,12 @@ public class Enemy : Entity
          Gizmos.DrawWireSphere(playerCheckPos.position, detectPlayerRadius);
     }
     public void SetEventOnFinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
-    private void AttackTrigger()
+    public void AttackTrigger()
     {
+        if(this.gameObject.tag == "Boss")
+        { 
+            AudioManager.instance.playerSFX(23);
+        }
         Collider2D player = Physics2D.OverlapCircle(playerCheckPos.position, detectPlayerRadius, playerLayer);
         if (player && !player.GetComponent<Player>().isDead)
         {
@@ -79,7 +83,7 @@ public class Enemy : Entity
     {
         beDamaged = true;
     }
-    protected virtual void OpenCounterAttackWindow()
+    public virtual void OpenCounterAttackWindow()
     {
         canBeStunned = true;
     }
@@ -96,7 +100,7 @@ public class Enemy : Entity
         } 
         return false;
     }
-    protected void AttackForBeStunned() 
+    public void AttackForBeStunned() 
     {
         attackedForBeStunned = true;
     }

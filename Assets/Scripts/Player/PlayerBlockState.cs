@@ -30,8 +30,6 @@ public class PlayerBlockState : PlayerState
     public override void Update()
     {
         base.Update();
-        //if(!canSlip)
-            //rb.velocity = Vector2.zero;
         
         Collider2D[] Enemies = Physics2D.OverlapCircleAll(player.enemyCheck.position, player.radiusEnemyDetected);
         foreach (var enemy in Enemies)
@@ -50,11 +48,6 @@ public class PlayerBlockState : PlayerState
                         AudioManager.instance.playerSFX(11);
                 
                     } 
-                    //else
-                    //{
-                    //    canSlip = true;
-                    //    rb.velocity = new Vector2(3f * -player.facingDirection, rb.velocity.y);
-                    //}
                  }
             } else if(enemy.GetComponent<Arrow>() != null)
             {   

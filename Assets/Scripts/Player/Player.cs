@@ -88,16 +88,6 @@ public class Player : Entity
         DetectEnemy();
         if (CheckGroundAction() && rb.velocity.y < -1f)
             AudioManager.instance.playerSFX(4);
-
-        // Dua binh rong va tien cho npc thi goi ham nay de tang so binh mau toi da, dong thoi hoi lai
-        // toan bo binh mau da mat
-        if (Input.GetKeyDown(KeyCode.E))
-            playerStats.IncreaseMaxFlask(1);
-
-
-        // Save game de hoi toan bo hp, mana va binh mau
-        if (Input.GetKeyDown(KeyCode.R))
-            playerStats.HealingAll();
         CheckManaAndShootingMagic();
     }
 
