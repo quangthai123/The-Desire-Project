@@ -46,4 +46,6 @@ public class EvilHand : MonoBehaviour
     {
         Gizmos.DrawWireCube(new Vector2(boxCenterPos.position.x, boxCenterPos.position.y - attackBoxDownDistance), boxSize);
     }
+
+
 }

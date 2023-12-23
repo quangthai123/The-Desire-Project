@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
-public class Inventory : MonoBehaviour,ISaveManager
+public class Inventory : MonoBehaviour, ISaveManager
 {
     public static Inventory instance;
 
@@ -19,6 +21,7 @@ public class Inventory : MonoBehaviour,ISaveManager
     [SerializeField] private Transform statSlotParent;
 
     [Header("Database")]
+    public List<ItemData> itemDatabase;
     public List<InventoryItem> loadedItems;
     public List<ItemData_Equipment> loadedEquipment;
 
@@ -182,12 +185,12 @@ public class Inventory : MonoBehaviour,ISaveManager
     {
         foreach (KeyValuePair<string, int> pair in _data.inventory)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in itemDatabase)
             {
-              
+
                 if (item != null && item.itemId == pair.Key)
                 {
-                  
+
                     InventoryItem itemToLoad = new InventoryItem(item);
                     itemToLoad.stackSize = pair.Value;
 
@@ -198,7 +201,7 @@ public class Inventory : MonoBehaviour,ISaveManager
 
         foreach (string loadedItemId in _data.equipmentId)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in itemDatabase)
             {
                 if (item != null && loadedItemId == item.itemId)
                 {
@@ -251,19 +254,25 @@ public class Inventory : MonoBehaviour,ISaveManager
 
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Fill ip")]
+    private void Fillup() => itemDatabase = new List<ItemData>(GetItemDataBase());
     private List<ItemData> GetItemDataBase()
     {
-        List<ItemData>  itemDataBase = new List<ItemData>();
+        List<ItemData> itemDataBase = new List<ItemData>();
         string[] assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data/Items" });
 
         foreach (string SOName in assetNames)
         {
             var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
             var itemData = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
-            
+
             itemDataBase.Add(itemData);
         }
 
         return itemDataBase;
     }
+#endif
+
+
 }
