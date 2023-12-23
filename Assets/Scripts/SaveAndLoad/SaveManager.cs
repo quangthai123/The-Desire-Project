@@ -46,8 +46,7 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.LoadData(gameData);
         }
-        Debug.Log("loaded" + gameData.currency);
-
+      
     }
 
     public void SaveGame()
@@ -56,7 +55,7 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.SaveData(ref gameData);
         }
-
+        
         dataHandler.Save(gameData);
     }
 
@@ -70,5 +69,22 @@ public class SaveManager : MonoBehaviour
     {
         IEnumerable<ISaveManager> saveManagers=FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
         return new List<ISaveManager>(saveManagers);
+    }
+
+    [ContextMenu("Delete saved file")]
+    public void DeleteSavedData()
+    {
+        dataHandler=new FileDataHandler(Application.persistentDataPath, fileName);
+        dataHandler.Delete();
+    }
+
+    public bool HasSaveData()
+    {
+        if (dataHandler.Load() != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

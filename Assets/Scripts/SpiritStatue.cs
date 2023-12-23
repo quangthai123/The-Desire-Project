@@ -23,16 +23,21 @@ public class SpiritStatue : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                player.playerStats.HealingAll();
-                if (player.playerStats.skillsChecker[statueNum]==0)
+
+                if (player.playerStats.skillsChecker[statueNum] == 0)
+                {
                     levelupUI.SetActive(true);
+                }
                 else
+                {
                     finishedUI.SetActive(true);
+                }
             }
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.gameObject.tag == "Player")
         {
             Eimage.SetActive(true);
@@ -49,8 +54,8 @@ public class SpiritStatue : MonoBehaviour
     {
         levelupUI.SetActive(false);
     }
-    public void CloseFinishUI() 
-    { 
+    public void CloseFinishUI()
+    {
         finishedUI.SetActive(false);
     }
     public void CloseNotEnoughMoneyUI()
@@ -61,19 +66,29 @@ public class SpiritStatue : MonoBehaviour
     {
         learnedUI.SetActive(false);
     }
-    public void LevelUp()
+    public void LevelUp(int i)
     {
         if (MoneyManager.instance.GetExtinctPoint() < extinctForThisSkill)
         {
+
             notEnoughMoneyUI.SetActive(true);
         }
         else
         {
             MoneyManager.instance.DecreaseExtinctPoint(extinctForThisSkill);
-            PlayerPrefs.SetInt("Skill" + statueNum.ToString(), 1);
+            player.playerStats.skillsChecker[i] = 1;
             player.playerStats.gotDamageData = false;
             levelupUI.SetActive(false);
             learnedUI.SetActive(true);
+        }
+
+    }
+
+    public void Hide(GameObject uiToHide)
+    {
+        if (uiToHide != null)
+        {
+            uiToHide.SetActive(false);
         }
     }
 }

@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_SkilltreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
+public class UI_SkilltreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
 
 {
     public bool unlocked;
     [SerializeField] private string skillName;
     [SerializeField] private string skillDescription;
-
 
     private Image skillImage;
 
@@ -41,11 +40,24 @@ public class UI_SkilltreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitH
     {
         PlayerStats playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
         skillImage = GetComponent<Image>();
-        skillsChecker = playerStats.skillsChecker;
-        skillImage.color = (skillsChecker[skillNumber] == 0) ? lockedSkillColor : Color.white;
-        ui=GetComponentInParent<UI>();
-        Debug.Log(ui);
+        updateSkill(playerStats);
+        ui = GetComponentInParent<UI>();
     }
 
+    private void Update()
+    {
+        PlayerStats playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        updateSkill(playerStats);
+    }
 
+    private void updateSkill(PlayerStats playerStats)
+    {
+        skillsChecker = playerStats.skillsChecker;
+        skillImage.color = (skillsChecker[skillNumber] == 0) ? lockedSkillColor : Color.white;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        skillsChecker[skillNumber] = 1;
+    }
 }

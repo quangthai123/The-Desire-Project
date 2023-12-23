@@ -14,11 +14,11 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI extinctPointText;
 
     [SerializeField] private Image dashImage;
-    [SerializeField] private Image skill1;
-    [SerializeField] private Image skill2;
-    [SerializeField] private Image skill3;
-    [SerializeField] private Image skill4;
-    [SerializeField] private Image skill5;
+    [SerializeField] private GameObject skill1;
+    [SerializeField] private GameObject skill2;
+    [SerializeField] private GameObject skill3;
+    [SerializeField] private GameObject skill4;
+    [SerializeField] private GameObject skill5;
 
     [SerializeField] private TextMeshProUGUI currentSouls;
     [SerializeField] private float dashCooldown;
@@ -37,6 +37,7 @@ public class UI_InGame : MonoBehaviour
         UpdateManaUI();
         UpdateFlaskUI();
         UpdateExtinctPointText();
+        UpdateSkill();
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -93,5 +94,34 @@ public class UI_InGame : MonoBehaviour
         {
             _image.fillAmount -= 1 / _cooldown * Time.deltaTime;
         }
+    }
+
+    public void UpdateSkill()
+    {
+        if (playerStats.skillsChecker[0] == 1)
+        {
+            skill1.SetActive(true);
+        }
+        else skill1.SetActive(false);
+        if (playerStats.skillsChecker[1] == 1)
+        {
+            skill2.SetActive(true);
+        }
+        else skill2.SetActive(false);
+        if (playerStats.skillsChecker[2] == 1)
+        {
+            skill3.SetActive(true);
+        }
+        else skill3.SetActive(false);
+        if (playerStats.skillsChecker[3] == 1)
+        {
+            skill4.SetActive(true);
+        }
+        else skill4.SetActive(false);
+        if (playerStats.skillsChecker[4] == 1)
+        {
+            skill5.SetActive(true);
+        }
+        else skill5.SetActive(false);
     }
 }

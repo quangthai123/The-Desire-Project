@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +13,7 @@ public enum StatType
     healthInFlask
 }
 
-public class PlayerStats : CharacterStats
+public class PlayerStats : CharacterStats, ISaveManager
 {
     public Stat maxMana;
     public Stat currentMaxFlask;
@@ -22,6 +24,8 @@ public class PlayerStats : CharacterStats
     private Player playerStates;
 
     public List<int> skillsChecker;
+    public List<int> skillsCheckerDB;
+
     public bool gotDamageData;
 
 
@@ -31,21 +35,28 @@ public class PlayerStats : CharacterStats
         playerStates = GetComponent<Player>();
         currentMana = 0;
         currentFlask = currentMaxFlask.GetValue();
+        skillsChecker = new List<int>(5);
+        skillsChecker = Enumerable.Repeat(0, 5).ToList();
+
+        if (skillsCheckerDB.Count > 0)
+        {
+            for (int i = 0; i < skillsChecker.Count; i++)
+            {
+                skillsChecker[i] = skillsCheckerDB[i];
+            }
+
+        }
+
     }
     private void Update()
     {
-        // lay du lieu skills tu playerprefs
-        for (int i = 0; i < skillsChecker.Count; i++)
-        {
-            skillsChecker[i] = PlayerPrefs.GetInt("Skill" + i.ToString());
-        }
-        // lay du lieu damage tu skill checker
+
         if (!gotDamageData)
         {
             for (int i = 0; i < skillsChecker.Count; i++)
             {
-                if (skillsChecker[i] == 1)
-                    damage.modifiers[i] = i + 1;
+                //if (skillsChecker[i] == 1)
+                //    damage.modifiers[i] = i +1;
             }
             gotDamageData = true;
         }
@@ -132,11 +143,42 @@ public class PlayerStats : CharacterStats
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public Stat GetStat(StatType _statType) {
+    public Stat GetStat(StatType _statType)
+    {
         if (_statType == StatType.hp) return maxHealth;
         if (_statType == StatType.mana) return maxHealth;
         if (_statType == StatType.damage) return damage;
         if (_statType == StatType.healthInFlask) return healthInFlask;
         return null;
+    }
+
+    public void LoadData(GameData _data)
+    {
+        for (int i = 0; i < skillsChecker.Count; i++)
+        {
+            if (_data.skillTree.TryGetValue(i, out int isUnlock))
+            {
+                skillsCheckerDB.Add(isUnlock);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+
+        for (int i = 0; i < skillsChecker.Count; i++)
+        {
+            var isUnlocked = skillsChecker[i];
+            if (_data.skillTree.TryGetValue(i, out int isUnlock))
+            {
+                _data.skillTree.Remove(i);
+                _data.skillTree.Add(i, isUnlocked);
+            }
+            else
+            {
+
+                _data.skillTree.Add(i, isUnlocked);
+            }
+        }
     }
 }

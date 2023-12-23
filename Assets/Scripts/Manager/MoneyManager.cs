@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoneyManager : MonoBehaviour
 {   
     public static MoneyManager instance;
-    private int extinctPoint;
+    public int extinctPoint;
     private void Start()
     {
         //PlayerPrefs.SetInt("extinct", 0);

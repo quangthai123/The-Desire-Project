@@ -14,6 +14,7 @@ public class PlayerDeathState : PlayerState
         AudioManager.instance.playerSFX(14);
         AudioManager.instance.StopAllBGM();
         player.isKnocked = true;
+        GameObject.Find("Canvas").GetComponent<UI>().SwitchOnEndScreen();
     }
 
     public override void Exit()
@@ -24,8 +25,8 @@ public class PlayerDeathState : PlayerState
     public override void Update()
     {
         base.Update();
-        rb.velocity = new Vector2(0f, rb.velocity.y);
-        if(finishAnim)
-            player.playerStats.ResetGameAfterDied();
+        //rb.velocity = new Vector2(0f, rb.velocity.y);
+        //if(finishAnim)
+        //    player.playerStats.ResetGameAfterDied();
     }
 }
