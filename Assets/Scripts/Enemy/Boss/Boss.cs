@@ -51,7 +51,7 @@ public class Boss : Enemy
             Destroy(gameObject);
         if(startBossCombat && !isDead && !playerPos.GetComponent<Entity>().isDead)
         {
-            AudioManager.instance.playBgm = true;
+            
             rb.gravityScale = 1f;
         }
     }
@@ -76,13 +76,11 @@ public class Boss : Enemy
         else
         {
             AudioManager.instance.playerSFX(22);
-            float xPos = -13f;
-            for (int i = 0; i < 6; i++)
+            float xPos = 6f;
+            for (int i = 0; i < 5; i++)
             {
-                Instantiate(evilHandPrefab, new Vector2(transform.position.x + xPos, -4f), Quaternion.identity);
-                if (xPos == -3)
-                    xPos = 3;
-                else xPos += 5;
+                Instantiate(evilHandPrefab, new Vector2(-49.5f + xPos, 18f), Quaternion.identity);
+                xPos += 6;
             }
         }
     }

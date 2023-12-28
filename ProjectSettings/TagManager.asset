@@ -13,6 +13,7 @@ TagManager:
   - Magic
   - Spirit
   - Boss
+  - Canvas
   layers:
   - Default
   - TransparentFX

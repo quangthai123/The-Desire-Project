@@ -17,7 +17,7 @@ public class Boss_SleepState : EnemyState
     public override void Exit()
     {
         base.Exit();
-        AudioManager.instance.playerSFX(24);
+        
         finishAnim = false;
     }
 

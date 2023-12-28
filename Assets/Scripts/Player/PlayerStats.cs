@@ -48,19 +48,19 @@ public class PlayerStats : CharacterStats, ISaveManager
         }
 
     }
-    private void Update()
-    {
+    //private void Update()
+    //{
 
-        if (!gotDamageData)
-        {
-            for (int i = 0; i < skillsChecker.Count; i++)
-            {
-                //if (skillsChecker[i] == 1)
-                //    damage.modifiers[i] = i +1;
-            }
-            gotDamageData = true;
-        }
-    }
+    //    if (!gotDamageData)
+    //    {
+    //        for (int i = 0; i < skillsChecker.Count; i++)
+    //        {
+    //            if (skillsChecker[i] == 1)
+    //                damage.modifiers[i] = i + 1;
+    //        }
+    //        gotDamageData = true;
+    //    }
+    //}
 
     public void DecreaseManaFromSkills(int mana)
     {
