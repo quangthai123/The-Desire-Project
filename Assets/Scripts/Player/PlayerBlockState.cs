@@ -30,7 +30,8 @@ public class PlayerBlockState : PlayerState
     public override void Update()
     {
         base.Update();
-        
+        if (!player.isKnocked)
+            rb.velocity = Vector2.zero;
         Collider2D[] Enemies = Physics2D.OverlapCircleAll(player.enemyCheck.position, player.radiusEnemyDetected);
         foreach (var enemy in Enemies)
         {

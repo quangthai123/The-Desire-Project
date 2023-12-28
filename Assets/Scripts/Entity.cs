@@ -45,6 +45,7 @@ public class Entity : MonoBehaviour
             onFlipped();
     }
     public virtual bool WallDetected() => Physics2D.Raycast(transform.position, Vector2.right * facingDirection, wallCheckDistance, whatIsWall);
+    public virtual bool WallGroundLayerDetected() => Physics2D.Raycast(transform.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
     public virtual bool CheckGroundMain() => Physics2D.Raycast(transform.position, Vector2.down, groundCheckDisRay, whatIsGround);
     public virtual bool CheckGroundAction() => Physics2D.Raycast(groundCheckPos.position, Vector2.down, groundCheckDisRay, whatIsGround);
     protected virtual void OnDrawGizmos()

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -39,7 +40,7 @@ public class Boss : Enemy
         base.Start();
         anim = animInChild;
         stateMachine.Initialize(sleepState);
-        facingDirection = -1;
+        facingDirection = 1;
         rb.gravityScale = 0f;
     }
 

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,10 @@ public class GameManager : MonoBehaviour, ISaveManager
 {
     public static GameManager instance;
     [SerializeField] private Checkpoint[] checkpoints;
-
+    [SerializeField] private CinemachineConfiner confiner;
+    [SerializeField] private Collider2D bossPhasecameraBounding;
     public string closestCheckpoing;
+    private Boss boss;
 
     public void LoadData(GameData _data)
     {
@@ -65,6 +68,12 @@ public class GameManager : MonoBehaviour, ISaveManager
     private void Start()
     {
         checkpoints = FindObjectsOfType<Checkpoint>();
+        boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<Boss>();
+    }
+    private void Update()
+    {
+        if (boss.startBossCombat)
+            confiner.m_BoundingShape2D = bossPhasecameraBounding;
     }
 
     public void RestartScene()

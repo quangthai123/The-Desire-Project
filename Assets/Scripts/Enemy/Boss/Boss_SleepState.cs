@@ -18,6 +18,7 @@ public class Boss_SleepState : EnemyState
     {
         base.Exit();
         AudioManager.instance.playerSFX(24);
+        finishAnim = false;
     }
 
 
@@ -25,6 +26,11 @@ public class Boss_SleepState : EnemyState
     {
         base.Update();
         if (enemy.startBossCombat)
+            enemy.GetComponentInChildren<Animator>().SetBool("Enter", true);
+        if(finishAnim)
+        {
+            enemy.GetComponentInChildren<Animator>().SetBool("Enter", false);
             enemy.stateMachine.ChangeState(enemy.idleState);
+        }
     }
 }
