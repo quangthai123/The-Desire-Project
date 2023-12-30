@@ -8,7 +8,6 @@ public class Boss_AttackState : EnemyState
     private Boss enemy;
     private int rdAttackNum;
     private int attackedCount = 1;
-    private bool rotatedInXAxisWhenAirAttack = false;
     public Boss_AttackState(Enemy enemyBase, EnemyStateMachine enemyStateMachine, string animBoolName, Boss enemy) : base(enemyBase, enemyStateMachine, animBoolName)
     {
         this.enemy = enemy;

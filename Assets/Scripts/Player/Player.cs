@@ -49,6 +49,7 @@ public class Player : Entity
     public bool isKnocked = false;
     public PlayerStats playerStats;
     [SerializeField] private Transform bullet;
+    [SerializeField] private Transform wallGroundLayerDetect;
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
@@ -170,7 +171,7 @@ public class Player : Entity
     }
     private void FinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     public bool GroundDetected() => Physics2D.BoxCast(mainBox.bounds.center, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
-
+    public override bool WallGroundLayerDetected() => Physics2D.Raycast(wallGroundLayerDetect.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
     protected override void OnDrawGizmos()
     {
         Gizmos.DrawCube(mainBox.bounds.center - new Vector3(0f, groundCheckDistance, 0f), boxSize);
