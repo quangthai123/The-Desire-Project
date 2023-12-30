@@ -14,6 +14,7 @@ public class Boss : Enemy
     public Boss_StunnedState stunnedState { get; private set; }
     public Boss_SpellCastState spellCastState { get; private set; }
     public Boss_SleepState sleepState { get; private set; }
+    public Boss_MovingInAirState movingInAirState { get; private set; }
 
     public EntityFx effect;
     public bool canDestroy = false;
@@ -21,7 +22,9 @@ public class Boss : Enemy
     [HideInInspector] public int spellCastType;
     [SerializeField] private Animator animInChild;
     [SerializeField] private Transform evilHandPrefab;
+    [SerializeField] private Transform axePrefab;
     public bool startBossCombat = false;
+    public float movingInAirSpeed;
 
     protected override void Awake()
     {
@@ -34,6 +37,7 @@ public class Boss : Enemy
         deathState = new Boss_DeathState(this, stateMachine, "Dead", this);
         spellCastState = new Boss_SpellCastState(this, stateMachine, "SpellCast", this);
         sleepState = new Boss_SleepState(this, stateMachine, "Sleep", this);
+        movingInAirState = new Boss_MovingInAirState(this, stateMachine, "Sleep", this);
     }
     protected override void Start()
     {
@@ -51,8 +55,8 @@ public class Boss : Enemy
             Destroy(gameObject);
         if(startBossCombat && !isDead && !playerPos.GetComponent<Entity>().isDead)
         {
-            
-            rb.gravityScale = 1f;
+            if(stateMachine.currentState != movingInAirState)
+                rb.gravityScale = 1f;
         }
     }
 
@@ -83,5 +87,11 @@ public class Boss : Enemy
                 xPos += 6;
             }
         }
+    }
+    public void SpawnAxeSkill()
+    {
+        Vector3 directionToPlayer = (playerPos.position - transform.position).normalized;
+        float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        Instantiate(axePrefab, transform.position, Quaternion.Euler(0f, 0f, angle + 180f));
     }
 }

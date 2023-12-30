@@ -13,6 +13,7 @@ public class Boss_MoveState : EnemyState
     public override void Start()
     {
         base.Start();
+        rb.gravityScale = 1f;
     }
     public override void Exit()
     {
@@ -29,7 +30,7 @@ public class Boss_MoveState : EnemyState
             enemy.Flip();
         if (!enemy.PlayerInAttackRange())
         {
-            rb.velocity = new Vector2(moveDir.x * enemy.speed, 0f);
+            rb.velocity = new Vector2(moveDir.x * enemy.speed, rb.velocity.y);
         }
         else
         {
