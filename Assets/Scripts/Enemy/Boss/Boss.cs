@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,6 +14,7 @@ public class Boss : Enemy
     public Boss_StunnedState stunnedState { get; private set; }
     public Boss_SpellCastState spellCastState { get; private set; }
     public Boss_SleepState sleepState { get; private set; }
+    public Boss_MovingInAirState movingInAirState { get; private set; }
 
     public EntityFx effect;
     public bool canDestroy = false;
@@ -20,7 +22,9 @@ public class Boss : Enemy
     [HideInInspector] public int spellCastType;
     [SerializeField] private Animator animInChild;
     [SerializeField] private Transform evilHandPrefab;
+    [SerializeField] private Transform axePrefab;
     public bool startBossCombat = false;
+    public float movingInAirSpeed;
 
     protected override void Awake()
     {
@@ -33,13 +37,14 @@ public class Boss : Enemy
         deathState = new Boss_DeathState(this, stateMachine, "Dead", this);
         spellCastState = new Boss_SpellCastState(this, stateMachine, "SpellCast", this);
         sleepState = new Boss_SleepState(this, stateMachine, "Sleep", this);
+        movingInAirState = new Boss_MovingInAirState(this, stateMachine, "Sleep", this);
     }
     protected override void Start()
     {
         base.Start();
         anim = animInChild;
         stateMachine.Initialize(sleepState);
-        facingDirection = -1;
+        facingDirection = 1;
         rb.gravityScale = 0f;
     }
 
@@ -50,8 +55,8 @@ public class Boss : Enemy
             Destroy(gameObject);
         if(startBossCombat && !isDead && !playerPos.GetComponent<Entity>().isDead)
         {
-            AudioManager.instance.playBgm = true;
-            rb.gravityScale = 1f;
+            if(stateMachine.currentState != movingInAirState)
+                rb.gravityScale = 1f;
         }
     }
 
@@ -75,14 +80,18 @@ public class Boss : Enemy
         else
         {
             AudioManager.instance.playerSFX(22);
-            float xPos = -13f;
-            for (int i = 0; i < 6; i++)
-            {             
-                Instantiate(evilHandPrefab, new Vector2(xPos, -.75f), Quaternion.identity);
-                if (xPos == -3)
-                    xPos = 3;
-                else xPos += 5;
+            float xPos = 6f;
+            for (int i = 0; i < 5; i++)
+            {
+                Instantiate(evilHandPrefab, new Vector2(-49.5f + xPos, 18f), Quaternion.identity);
+                xPos += 6;
             }
         }
+    }
+    public void SpawnAxeSkill()
+    {
+        Vector3 directionToPlayer = (playerPos.position - transform.position).normalized;
+        float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+        Instantiate(axePrefab, transform.position, Quaternion.Euler(0f, 0f, angle + 180f));
     }
 }

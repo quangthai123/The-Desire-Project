@@ -15,6 +15,8 @@ public class PlayerDashState : PlayerState
         player.mainBox.isTrigger = true;
         player.lieDownBox.enabled = true;
         AudioManager.instance.playerSFX(2);
+
+      
     }
 
     public override void Exit()

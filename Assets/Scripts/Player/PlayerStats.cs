@@ -1,9 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerStats : CharacterStats
+public enum StatType
+{
+    hp,
+    mana,
+    damage,
+    healthInFlask
+}
+
+public class PlayerStats : CharacterStats, ISaveManager
 {
     public Stat maxMana;
     public Stat currentMaxFlask;
@@ -11,42 +21,58 @@ public class PlayerStats : CharacterStats
     public int currentMana;
     public int maxFlask;
     public int currentFlask;
-    public List<int> skillsChecker;
     private Player playerStates;
+
+    public List<int> skillsChecker;
+    public List<int> skillsCheckerDB;
+
     public bool gotDamageData;
+
+
     protected override void Start()
     {
         base.Start();
-        gotDamageData = false;
-        //for (int i = 0; i < skillsChecker.Count; i++)
-        //{
-        //    PlayerPrefs.SetInt("Skill" + i.ToString(), 0);
-        //}
         playerStates = GetComponent<Player>();
         currentMana = 0;
+        //PlayerPrefs.SetInt("flaskModifiers", 0);
+        currentMaxFlask.AddModifier(PlayerPrefs.GetInt("flaskModifiers"));
         currentFlask = currentMaxFlask.GetValue();
-    }
-    private void Update()
-    {
-        // lay du lieu skills tu playerprefs
-        for(int i=0; i<skillsChecker.Count; i++)
-        {
-            skillsChecker[i] = PlayerPrefs.GetInt("Skill"+i.ToString());
-        }
-        // lay du lieu damage tu skill checker
-        if (!gotDamageData)
+        skillsChecker = new List<int>(5);
+        skillsChecker = Enumerable.Repeat(0, 5).ToList();
+
+        if (skillsCheckerDB.Count > 0)
         {
             for (int i = 0; i < skillsChecker.Count; i++)
             {
-                if (skillsChecker[i] == 1)
-                    damage.modifiers[i] = i + 1;
+                skillsChecker[i] = skillsCheckerDB[i];
             }
-            gotDamageData = true;
+
         }
+
     }
+    //private void Update()
+    //{
+
+    //    if (!gotDamageData)
+    //    {
+    //        for (int i = 0; i < skillsChecker.Count; i++)
+    //        {
+    //            if (skillsChecker[i] == 1)
+    //                damage.modifiers[i] = i + 1;
+    //        }
+    //        gotDamageData = true;
+    //    }
+    //}
+
     public void DecreaseManaFromSkills(int mana)
     {
-        currentMana -= mana;
+        if (currentMana < mana)
+        {
+            // AudioManager (am thanh het mana)
+            return;
+        }
+        else
+            currentMana -= mana;
     }
     public void IncreaseManaFromAttack(int mana)
     {
@@ -60,6 +86,19 @@ public class PlayerStats : CharacterStats
     {
         healthInFlask.AddModifier(heal);
     }
+    public void DecreaseHealthInFlask(int heal)
+    {
+        healthInFlask.RemoveModifier(heal);
+    }
+    public void IncreaseDamage(int damage1)
+    {
+        damage.AddModifier(damage1);
+    }
+    public void DecreaseDamage(int damage1)
+    {
+        damage.RemoveModifier(damage1);
+    }
+
     public void Healing()
     {
         currentFlask--;
@@ -74,9 +113,18 @@ public class PlayerStats : CharacterStats
         maxHealth.AddModifier(healthToAdd);
         currentHealth = maxHealth.GetValue();
     }
+    public void DecreaseMaxHealth(int healthToAdd)
+    {
+        maxHealth.RemoveModifier(healthToAdd);
+        currentHealth = maxHealth.GetValue();
+    }
     public void IncreaseMaxMana(int manaToAdd)
     {
         maxMana.AddModifier(manaToAdd);
+    }
+    public void DecreaseMaxMana(int manaToAdd)
+    {
+        maxMana.RemoveModifier(manaToAdd);
     }
     public void IncreaseMaxFlask(int flaskToAdd)
     {
@@ -84,6 +132,7 @@ public class PlayerStats : CharacterStats
             return;
         currentMaxFlask.AddModifier(flaskToAdd);
         currentFlask = currentMaxFlask.GetValue();
+        PlayerPrefs.SetInt("flaskModifiers", currentMaxFlask.GetValue()-1);
     }
 
     public void HealingAll()
@@ -101,8 +150,43 @@ public class PlayerStats : CharacterStats
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    public void IncreaseDamage(int damageToAdd)
+
+    public Stat GetStat(StatType _statType)
     {
-        damage.AddModifier(damageToAdd);
+        if (_statType == StatType.hp) return maxHealth;
+        if (_statType == StatType.mana) return maxHealth;
+        if (_statType == StatType.damage) return damage;
+        if (_statType == StatType.healthInFlask) return healthInFlask;
+        return null;
+    }
+
+    public void LoadData(GameData _data)
+    {
+        for (int i = 0; i < skillsChecker.Count; i++)
+        {
+            if (_data.skillTree.TryGetValue(i, out int isUnlock))
+            {
+                skillsCheckerDB.Add(isUnlock);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+
+        for (int i = 0; i < skillsChecker.Count; i++)
+        {
+            var isUnlocked = skillsChecker[i];
+            if (_data.skillTree.TryGetValue(i, out int isUnlock))
+            {
+                _data.skillTree.Remove(i);
+                _data.skillTree.Add(i, isUnlocked);
+            }
+            else
+            {
+
+                _data.skillTree.Add(i, isUnlocked);
+            }
+        }
     }
 }

@@ -1,0 +1,63 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class UI_SkilltreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IPointerClickHandler
+
+{
+    public bool unlocked;
+    [SerializeField] private string skillName;
+    [SerializeField] private string skillDescription;
+
+    private Image skillImage;
+
+    [SerializeField] private int skillNumber;
+
+    [SerializeField] private Color lockedSkillColor;
+
+    public UI ui;
+
+    private List<int> skillsChecker;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+       ui.skillToolTip.ShowToolTip(skillDescription,skillName);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ui.skillToolTip.HideToolTip();
+    }
+
+    private void OnValidate()
+    {
+        gameObject.name = "SkillTreeSlot_UI - " + skillName;
+    }
+
+    private void Start()
+    {
+        PlayerStats playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        skillImage = GetComponent<Image>();
+        updateSkill(playerStats);
+        ui = GetComponentInParent<UI>();
+    }
+
+    private void Update()
+    {
+        PlayerStats playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
+        updateSkill(playerStats);
+    }
+
+    private void updateSkill(PlayerStats playerStats)
+    {
+        skillsChecker = playerStats.skillsChecker;
+        skillImage.color = (skillsChecker[skillNumber] == 0) ? lockedSkillColor : Color.white;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        skillsChecker[skillNumber] = 1;
+    }
+}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fabf02e7258d80d469304c2fc9923b49, type: 3}
+  m_Name: dataequip2 3
+  m_EditorClassIdentifier: 
+  itemType: 1
+  name: "M\u0169 chi\u1EBFn binh"
+  icon: {fileID: 1546103872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  itemId: c4eedb4c4b720f0488bcd7462d18fb08
+  equipmentType: 2
+  ItemEffects: []
+  damage: 0
+  mana: 30
+  speed: 0
+  flask: 0
+  hp: 100

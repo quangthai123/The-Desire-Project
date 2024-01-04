@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
+
 using UnityEngine;
 
 public class Player : Entity
@@ -51,6 +49,7 @@ public class Player : Entity
     public bool isKnocked = false;
     public PlayerStats playerStats;
     [SerializeField] private Transform bullet;
+    [SerializeField] private Transform wallGroundLayerDetect;
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
@@ -88,6 +87,8 @@ public class Player : Entity
         DetectEnemy();
         if (CheckGroundAction() && rb.velocity.y < -1f)
             AudioManager.instance.playerSFX(4);
+
+
         CheckManaAndShootingMagic();
     }
 
@@ -124,7 +125,7 @@ public class Player : Entity
             if (enemy.GetComponentInParent<Enemy>() != null && !enemy.GetComponentInParent<Enemy>().isDead)
             {
                 AudioManager.instance.playerSFX(9);
-                if(stateMachine.currentState == primaryAttackState && primaryAttackState.comboCounter >= 2)
+                if (stateMachine.currentState == primaryAttackState && primaryAttackState.comboCounter >= 2)
                     enemy.GetComponentInParent<Enemy>().BeDamaged();
                 playerStats.IncreaseManaFromAttack(1);
                 if (stateMachine.currentState != blockState)
@@ -170,7 +171,7 @@ public class Player : Entity
     }
     private void FinishAnimation() => stateMachine.currentState.SetFinishAnimationEvent();
     public bool GroundDetected() => Physics2D.BoxCast(mainBox.bounds.center, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
-
+    public override bool WallGroundLayerDetected() => Physics2D.Raycast(wallGroundLayerDetect.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
     protected override void OnDrawGizmos()
     {
         Gizmos.DrawCube(mainBox.bounds.center - new Vector3(0f, groundCheckDistance, 0f), boxSize);
@@ -178,6 +179,11 @@ public class Player : Entity
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Flask")
+        {
+            playerStats.IncreaseMaxFlask(1);
+            Destroy(collision.gameObject);
+        }
         if (collision.gameObject.tag == "Enemy" && stateMachine.currentState != dashState && stateMachine.currentState != airDashState && !isDead)
         {
             AudioManager.instance.playerSFX(8);
@@ -245,7 +251,7 @@ public class Player : Entity
         {
             playerStats.TakeDamage(playerStats.maxHealth.GetValue());
         }
-       
+
     }
 
     public void LightlyPushingPlayer(Vector2 enemyPos)

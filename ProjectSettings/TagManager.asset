@@ -13,6 +13,8 @@ TagManager:
   - Magic
   - Spirit
   - Boss
+  - Canvas
+  - Flask
   layers:
   - Default
   - TransparentFX
@@ -52,6 +54,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 2669310335
+    locked: 0
+  - name: Checpoint
+    uniqueID: 3213953141
     locked: 0
   - name: Item
     uniqueID: 529269649
