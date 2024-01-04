@@ -179,6 +179,11 @@ public class Player : Entity
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Flask")
+        {
+            playerStats.IncreaseMaxFlask(1);
+            Destroy(collision.gameObject);
+        }
         if (collision.gameObject.tag == "Enemy" && stateMachine.currentState != dashState && stateMachine.currentState != airDashState && !isDead)
         {
             AudioManager.instance.playerSFX(8);

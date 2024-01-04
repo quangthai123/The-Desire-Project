@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     public bool isDead = false;
     [Header("Collision Infor")]
     [SerializeField] private Transform groundCheckPos;
+    [SerializeField] protected Transform wallCheckPos;
     [SerializeField] protected LayerMask whatIsGround;
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsWall;
@@ -44,13 +45,13 @@ public class Entity : MonoBehaviour
         if(onFlipped != null)
             onFlipped();
     }
-    public virtual bool WallDetected() => Physics2D.Raycast(transform.position, Vector2.right * facingDirection, wallCheckDistance, whatIsWall);
+    public virtual bool WallDetected() => Physics2D.Raycast(wallCheckPos.position, Vector2.right * facingDirection, wallCheckDistance, whatIsWall);
     public virtual bool WallGroundLayerDetected() => Physics2D.Raycast(transform.position, Vector2.right * facingDirection, wallCheckDistance, whatIsGround);
     public virtual bool CheckGroundMain() => Physics2D.Raycast(transform.position, Vector2.down, groundCheckDisRay, whatIsGround);
     public virtual bool CheckGroundAction() => Physics2D.Raycast(groundCheckPos.position, Vector2.down, groundCheckDisRay, whatIsGround);
     protected virtual void OnDrawGizmos()
     {       
-        Gizmos.DrawLine(transform.position, new Vector2(transform.position.x + facingDirection * wallCheckDistance, transform.position.y));
+        Gizmos.DrawLine(transform.position, new Vector2(wallCheckPos.position.x + facingDirection * wallCheckDistance, wallCheckPos.position.y));
         Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - groundCheckDisRay));
         if(gameObject.layer == 7)
             Gizmos.DrawLine(groundCheckPos.position, new Vector2(groundCheckPos.position.x, groundCheckPos.position.y - groundCheckDisRay));

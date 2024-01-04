@@ -8,6 +8,7 @@ public class EnemyTrap_Door : MonoBehaviour
     [SerializeField] private GameObject itemToControlDoor;
     [SerializeField] private GameObject foreground;
     [SerializeField] private GameObject contraintEnemiesTrap;
+    [SerializeField] private bool rightDoor = false;
     void Start()
     {
         
@@ -16,7 +17,9 @@ public class EnemyTrap_Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(itemToControlDoor == null)
+        if (PlayerPrefs.GetInt("flaskModifiers") >= 1)
+            Destroy(itemToControlDoor);
+        if (itemToControlDoor == null)
         {
             doorOfThisEnemyTrap.SetActive(false);
         }
@@ -31,15 +34,54 @@ public class EnemyTrap_Door : MonoBehaviour
         }
         else if(collision.gameObject.tag == "Player" && itemToControlDoor == null)
         {
-            if(collision.gameObject.GetComponent<Player>().facingDirection == -1)
+            if (collision.gameObject.GetComponent<Player>().facingDirection == -1)
             {
-                Debug.Log("Hien");
-                foreground.SetActive(true);
-            } else if(collision.gameObject.GetComponent<Player>().facingDirection == 1)
+                if (!rightDoor)
+                    foreground.SetActive(true);
+                else
+                {
+                    foreground.SetActive(false);
+                    contraintEnemiesTrap.SetActive(false);
+                }
+            }
+            else if (collision.gameObject.GetComponent<Player>().facingDirection == 1)
             {
-                Debug.Log("An");
-                foreground.SetActive(false);
-            } 
+                if (!rightDoor)
+                {
+                    contraintEnemiesTrap.SetActive(false);
+                    foreground.SetActive(false);
+                }
+                else
+                {
+                    foreground.SetActive(true);
+                }
+            }
         }   
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && itemToControlDoor == null)
+        {
+            if (collision.gameObject.GetComponent<Player>().facingDirection == -1)
+            {
+                if (!rightDoor)
+                    foreground.SetActive(true);
+                else
+                {
+                    foreground.SetActive(false);
+                }
+            }
+            else if (collision.gameObject.GetComponent<Player>().facingDirection == 1)
+            {
+                if (!rightDoor)
+                {
+                    foreground.SetActive(false);
+                }
+                else
+                {
+                    foreground.SetActive(true);
+                }
+            }
+        }
     }
 }

@@ -34,6 +34,8 @@ public class PlayerStats : CharacterStats, ISaveManager
         base.Start();
         playerStates = GetComponent<Player>();
         currentMana = 0;
+        //PlayerPrefs.SetInt("flaskModifiers", 0);
+        currentMaxFlask.AddModifier(PlayerPrefs.GetInt("flaskModifiers"));
         currentFlask = currentMaxFlask.GetValue();
         skillsChecker = new List<int>(5);
         skillsChecker = Enumerable.Repeat(0, 5).ToList();
@@ -130,6 +132,7 @@ public class PlayerStats : CharacterStats, ISaveManager
             return;
         currentMaxFlask.AddModifier(flaskToAdd);
         currentFlask = currentMaxFlask.GetValue();
+        PlayerPrefs.SetInt("flaskModifiers", currentMaxFlask.GetValue()-1);
     }
 
     public void HealingAll()
