@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class SaveManager : MonoBehaviour
 {
@@ -12,13 +13,17 @@ public class SaveManager : MonoBehaviour
     private List<ISaveManager> saveManagers;
     private FileDataHandler dataHandler;
 
+
     [SerializeField] private string fileName;
 
     private void Start()
     {
-        dataHandler = new FileDataHandler(Application.persistentDataPath,fileName);
-        saveManagers=FindAllSaveManager();
-        LoadGame();
+        //string dataPath = Application.persistentDataPath;
+        //Debug.Log("Persistent Data Path: " + dataPath);
+        //dataHandler = new FileDataHandler(dataPath, fileName);
+        //Debug.Log("handle" + dataHandler);
+        //saveManagers = FindAllSaveManager();
+        //LoadGame();
     }
     private void Awake()
     {
@@ -27,6 +32,14 @@ public class SaveManager : MonoBehaviour
             Destroy(instance.gameObject);
         }
         else instance = this;
+
+        string dataPath = Application.persistentDataPath;
+        
+        dataHandler = new FileDataHandler(dataPath, fileName);
+        
+
+        saveManagers = FindAllSaveManager();
+        LoadGame();
     }
     public void NewGame()
     {
@@ -46,7 +59,6 @@ public class SaveManager : MonoBehaviour
         {
             saveManager.LoadData(gameData);
         }
-      
     }
 
     public void SaveGame()
@@ -62,7 +74,7 @@ public class SaveManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Debug.Log("save game");
+        
         SaveGame();
     }
 
@@ -81,11 +93,22 @@ public class SaveManager : MonoBehaviour
 
     public bool HasSaveData()
     {
-        if (dataHandler.Load() != null)
+        try
         {
-            return true;
+         
+            if (dataHandler.Load() != null)
+            {
+              
+                return true;
+            }
+         
+            return false;
         }
-
-        return false;
+        catch (Exception e)
+        {
+           
+            return false;
+        }
     }
+
 }

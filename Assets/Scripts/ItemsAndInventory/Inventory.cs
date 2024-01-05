@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour, ISaveManager
     [SerializeField] private Transform statSlotParent;
 
     [Header("Database")]
-    public List<ItemData> itemDatabase;
+    public ItemData[] itemDatabase;
     public List<InventoryItem> loadedItems;
     public List<ItemData_Equipment> loadedEquipment;
 
@@ -40,10 +40,7 @@ public class Inventory : MonoBehaviour, ISaveManager
         }
         else
             Destroy(gameObject);
-    }
 
-    public void Start()
-    {
         inventoryItems = new List<InventoryItem>();
         inventoryDictionary = new Dictionary<ItemData, InventoryItem>();
 
@@ -53,7 +50,22 @@ public class Inventory : MonoBehaviour, ISaveManager
         inventoryItemsSlot = inventorySlotParent.GetComponentsInChildren<UI_ItemSlot>();
         equipmentItemsSlot = equipmentSlotParent.GetComponentsInChildren<UI_EquipmentSlot>();
         statSlot = statSlotParent.GetComponentsInChildren<UI_StatSlot>();
+        itemDatabase = Resources.LoadAll<ItemData>("items");
+       
+    }
 
+    public void Start()
+    {
+        StartCoroutine(WaitAndAddStartingItems());
+      
+    }
+
+    private IEnumerator WaitAndAddStartingItems()
+    {
+       
+        yield return new WaitForSeconds(1f);
+
+      
         AddStartingItems();
     }
 
@@ -183,6 +195,7 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     public void LoadData(GameData _data)
     {
+     
         foreach (KeyValuePair<string, int> pair in _data.inventory)
         {
             foreach (var item in itemDatabase)
@@ -209,9 +222,11 @@ public class Inventory : MonoBehaviour, ISaveManager
                 }
             }
         }
+        Debug.Log("loadDatra "+loadedItems.Count);
     }
     private void AddStartingItems()
     {
+        Debug.Log("add start "+loadedItems.Count);
         foreach (ItemData_Equipment item in loadedEquipment)
         {
             EquipItem(item);
@@ -254,9 +269,11 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     }
 
+ 
+
 #if UNITY_EDITOR
     [ContextMenu("Fill ip")]
-    private void Fillup() => itemDatabase = new List<ItemData>(GetItemDataBase());
+  
     private List<ItemData> GetItemDataBase()
     {
         List<ItemData> itemDataBase = new List<ItemData>();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemObject : MonoBehaviour
@@ -8,9 +9,15 @@ public class ItemObject : MonoBehaviour
 
     [SerializeField] private ItemData itemData;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Inventory inventory;
 
-
-
+    private void Update()
+    {
+        if (checkIsInInventory()|| checkIsInInventory2())
+        {
+            Destroy(gameObject);
+        }
+    }
     private void OnValidate()
     {
         GetComponent<SpriteRenderer>().sprite = itemData.icon;
@@ -32,4 +39,15 @@ public class ItemObject : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private bool checkIsInInventory()
+    {
+        return inventory.inventoryItems.Any(item => item.data.itemId == itemData.itemId);
+    }
+
+    private bool checkIsInInventory2()
+    {
+        return inventory.equipment.Any(item => item.data.itemId == itemData.itemId);
+    }
+
 }
