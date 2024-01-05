@@ -8,6 +8,7 @@ public class SpiritStatue : MonoBehaviour
     public int statueNum;
     [SerializeField] int extinctForThisSkill;
     private Player player;
+    [SerializeField] private int damageForIncrease;
     [SerializeField] private GameObject Eimage;
     [SerializeField] private GameObject levelupUI;
     [SerializeField] private GameObject finishedUI;
@@ -77,7 +78,7 @@ public class SpiritStatue : MonoBehaviour
         {
             MoneyManager.instance.DecreaseExtinctPoint(extinctForThisSkill);
             player.playerStats.skillsChecker[i] = 1;
-            player.playerStats.gotDamageData = false;
+            player.playerStats.IncreaseDamage(damageForIncrease);
             levelupUI.SetActive(false);
             learnedUI.SetActive(true);
         }

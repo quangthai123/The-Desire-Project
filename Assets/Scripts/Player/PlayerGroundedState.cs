@@ -27,7 +27,13 @@ public class PlayerGroundedState : PlayerState
         }
         if(Input.GetKeyDown(KeyCode.LeftShift) && player.dashCooldownCounter < 0f)
         {
-            stateMachine.ChangeState(player.dashState);
+            if(!player.WallGroundLayerDetected())
+                stateMachine.ChangeState(player.dashState);
+            else
+            {
+                player.transform.position = new Vector2(player.transform.position.x - player.facingDirection * 1.4f, player.transform.position.y);
+                stateMachine.ChangeState(player.dashState);
+            }
         }
         if(Input.GetKeyDown(KeyCode.J))
         {

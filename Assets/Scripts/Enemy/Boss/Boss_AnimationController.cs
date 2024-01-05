@@ -16,7 +16,7 @@ public class Boss_AnimationController : MonoBehaviour
         parent.SpawnEvilHand();
     }
     private void CuttingAttackTrigger()
-    {
+    {   
         parent.AttackTrigger();
     }
     private void FinishAnimation()

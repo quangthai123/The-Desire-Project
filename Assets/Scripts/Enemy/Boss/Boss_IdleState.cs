@@ -17,7 +17,7 @@ public class Boss_IdleState : EnemyState
         enemyBase.attackedForBeStunned = false;
         float rd = Random.Range(enemy.idleMinTime, enemy.idleMaxTime);
         stateDurationCounter = rd;
-        rdAttackType = Random.Range(0, 3);
+        rdAttackType = Random.Range(0, 4);
     }
     public override void Exit()
     {
@@ -41,6 +41,11 @@ public class Boss_IdleState : EnemyState
             {
                 enemy.stateMachine.ChangeState(enemy.spellCastState);
                 enemy.spellCastType = 2;
+            }
+            else if (rdAttackType == 3)
+            {
+                enemy.stateMachine.ChangeState(enemy.movingInAirState);
+
             }
         }
         if (enemy.isDead)

@@ -18,8 +18,8 @@ MonoBehaviour:
   itemId: 1b547d091e84460408e918dc34bbf295
   equipmentType: 0
   ItemEffects: []
-  damage: 10
-  mana: 100
+  damage: 2
+  mana: 15
   speed: 1
   flask: 0
   hp: 0

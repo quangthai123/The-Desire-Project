@@ -19,7 +19,7 @@ MonoBehaviour:
   equipmentType: 1
   ItemEffects: []
   damage: 0
-  mana: 50
+  mana: 25
   speed: 2
   flask: 0
   hp: 0

@@ -14,7 +14,7 @@ public class PlayerDeathState : PlayerState
         AudioManager.instance.playBgm = false;
         AudioManager.instance.playerSFX(14);
         player.isKnocked = true;
-        GameObject.Find("Canvas").GetComponent<UI>().SwitchOnEndScreen();
+        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UI>().SwitchOnEndScreen();
     }
 
     public override void Exit()

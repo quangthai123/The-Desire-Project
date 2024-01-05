@@ -13,6 +13,8 @@ TagManager:
   - Magic
   - Spirit
   - Boss
+  - Canvas
+  - Flask
   layers:
   - Default
   - TransparentFX
