@@ -16,21 +16,22 @@ public class EnemyTrap_Door : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (PlayerPrefs.GetInt("flaskModifiers") >= 1)
-            Destroy(itemToControlDoor);
+    {      
         if (itemToControlDoor == null)
         {
-            doorOfThisEnemyTrap.SetActive(false);
+            if(doorOfThisEnemyTrap != null)
+                doorOfThisEnemyTrap.SetActive(false);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player" && itemToControlDoor != null)
         {
-            doorOfThisEnemyTrap.SetActive(true);
+            if(doorOfThisEnemyTrap != null)
+                doorOfThisEnemyTrap.SetActive(true);
             foreground.SetActive(false);
-            contraintEnemiesTrap.SetActive(false);  
+            if(contraintEnemiesTrap != null)
+                contraintEnemiesTrap.SetActive(false);  
         }
         else if(collision.gameObject.tag == "Player" && itemToControlDoor == null)
         {

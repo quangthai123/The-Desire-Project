@@ -25,7 +25,6 @@ public class PlayerHealingState : PlayerState
     public override void Update()
     {
         base.Update();
-        rb.velocity = Vector3.zero;
         if (finishAnim)
             stateMachine.ChangeState(player.idleState);
     }

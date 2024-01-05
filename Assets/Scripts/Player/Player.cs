@@ -87,8 +87,6 @@ public class Player : Entity
         DetectEnemy();
         if (CheckGroundAction() && rb.velocity.y < -1f)
             AudioManager.instance.playerSFX(4);
-
-
         CheckManaAndShootingMagic();
     }
 
@@ -238,7 +236,7 @@ public class Player : Entity
         }
         else if (collision.gameObject.tag == "Magic" && !isDead && !isKnocked)
         {
-            if (blockState.isCountering)
+            if (blockState.isCountering || stateMachine.currentState == dashState || stateMachine.currentState == airDashState)
                 return;
             BeDamaged(40, collision.gameObject.transform.position);
             AudioManager.instance.playerSFX(20);
