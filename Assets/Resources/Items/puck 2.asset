@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a77c4a367d437c489294f0f92ac31c4, type: 3}
-  m_Name: puck
+  m_Name: puck 2
   m_EditorClassIdentifier: 
   itemType: 0
   name: "M\u1EA3nh Puck"
