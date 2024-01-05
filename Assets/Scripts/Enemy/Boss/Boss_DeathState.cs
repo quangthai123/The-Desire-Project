@@ -20,7 +20,7 @@ public class Boss_DeathState : EnemyState
     public override void Exit()
     {
         base.Exit();
-       
+        
     }
 
 
@@ -31,6 +31,7 @@ public class Boss_DeathState : EnemyState
         {
             AudioManager.instance.playerSFX(25);           
             enemy.canDestroy = true;
+            GameManager.instance.OpenEndingUI();
         }
     }
 }

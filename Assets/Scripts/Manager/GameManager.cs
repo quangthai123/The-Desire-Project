@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour, ISaveManager
     [SerializeField] private Collider2D bossPhasecameraBounding;
     public string closestCheckpoing;
     private Boss boss;
+    [SerializeField] private GameObject badUI;
+    [SerializeField] private GameObject goodUI;
 
     public void LoadData(GameData _data)
     {
@@ -97,5 +99,20 @@ public class GameManager : MonoBehaviour, ISaveManager
             }
         }
         return cloestCheckpoint;
+    }
+    public void OpenEndingUI()
+    {
+        
+        if (Inventory.instance.inventoryItems.Count + Inventory.instance.equipment.Count < 6)
+        {
+            badUI.SetActive(true);
+        }
+        else goodUI.SetActive(true);
+        AudioManager.instance.playBgm = false;
+        Time.timeScale = 0f;
+    }
+    public void ReturnMainMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex -1);
     }
 }
