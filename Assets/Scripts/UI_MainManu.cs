@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class UI_MainManu : MonoBehaviour
 {
-    [SerializeField] private string sceneName = "scene1";
+    [SerializeField] private string sceneName = "scene 2";
     [SerializeField] private GameObject continueBtn;
     [SerializeField] UI_FadingScrene fadeScreen;
 

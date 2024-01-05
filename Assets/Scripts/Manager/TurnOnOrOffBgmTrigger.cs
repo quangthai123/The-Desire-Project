@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class TurnOnOrOffBgmTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Vector2 playerPos;
     void Start()
     {
-        
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        if (playerPos.x < transform.position.x && playerPos.y > transform.position.y)
+            AudioManager.instance.playBgm = false;
     }
 
     // Update is called once per frame
@@ -19,7 +21,9 @@ public class TurnOnOrOffBgmTrigger : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            AudioManager.instance.playBgm = !AudioManager.instance.playBgm;
+            if(collision.gameObject.GetComponent<Player>().facingDirection==-1)
+                AudioManager.instance.playBgm = false;
+            else AudioManager.instance.playBgm = true;
         }
     }
 }
