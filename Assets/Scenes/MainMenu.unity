@@ -67,9 +67,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -157,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b545f575886e84297d009f4d5058b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: scene 2
+  sceneName: scene2
   continueBtn: {fileID: 414752158}
   fadeScreen: {fileID: 1363447945}
 --- !u!114 &52802346
@@ -1547,7 +1544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481200, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481201, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_Pivot.x
@@ -1583,7 +1580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481201, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 683.93
+      value: 973.08
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481201, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1619,7 +1616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481201, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.0487
+      value: 0.0011902
       objectReference: {fileID: 0}
     - target: {fileID: 280448939471481201, guid: 3e4cef94289cbda44917c7dec9c6a18d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -18,6 +18,7 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public string itemId;
 
+
     protected StringBuilder sb = new StringBuilder();
 
     private void OnValidate()
@@ -33,13 +34,12 @@ public class ItemData : ScriptableObject
         return "";
     }
 
-    // Use this method to load the asset
+
     public static ItemData LoadItemData(string itemName)
     {
-        // The path to the asset is relative to the "Resources" folder
-        string path = "ItemData/" + itemName; // Adjust the path accordingly
+    
+        string path = "ItemData/" + itemName; 
 
-        // Load the asset using Resources.Load
         ItemData loadedItem = Resources.Load<ItemData>(path);
 
         return loadedItem;

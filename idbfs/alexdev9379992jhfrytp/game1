@@ -1,0 +1,17 @@
+{
+    "currency": 0,
+    "skillTree": {
+        "keys": [],
+        "values": []
+    },
+    "inventory": {
+        "keys": [],
+        "values": []
+    },
+    "equipmentId": [],
+    "checkpoints": {
+        "keys": [],
+        "values": []
+    },
+    "cloestCheckpointId": ""
+}

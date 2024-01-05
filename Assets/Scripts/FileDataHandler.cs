@@ -14,6 +14,8 @@ public class FileDataHandler
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
     }
+    
+    
 
     public void Save(GameData _data)
     {
