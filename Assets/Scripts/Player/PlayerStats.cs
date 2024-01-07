@@ -48,7 +48,11 @@ public class PlayerStats : CharacterStats, ISaveManager
             }
 
         }
-
+        for(int i=0; i<5; i++) 
+        {
+            if (skillsChecker[i] != 0)
+                damage.AddModifier(i+1);
+        }
     }
     //private void Update()
     //{
@@ -154,7 +158,7 @@ public class PlayerStats : CharacterStats, ISaveManager
     public Stat GetStat(StatType _statType)
     {
         if (_statType == StatType.hp) return maxHealth;
-        if (_statType == StatType.mana) return maxHealth;
+        if (_statType == StatType.mana) return maxMana;
         if (_statType == StatType.damage) return damage;
         if (_statType == StatType.healthInFlask) return healthInFlask;
         return null;

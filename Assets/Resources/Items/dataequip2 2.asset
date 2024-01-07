@@ -20,6 +20,6 @@ MonoBehaviour:
   ItemEffects: []
   damage: 2
   mana: 15
-  speed: 1
-  flask: 0
+  speed: 0
+  flask: 25
   hp: 0

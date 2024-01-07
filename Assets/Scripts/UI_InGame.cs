@@ -46,12 +46,7 @@ public class UI_InGame : MonoBehaviour
         UpdateFlaskUI();
         UpdateExtinctPointText();
         UpdateSkill();
-        if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            UpdateBossHealthUI();
-        }
-
-            UpdateBossHealthUI();
+        UpdateBossHealthUI();
         
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {

@@ -90,6 +90,7 @@ public class ItemData_Equipment : ItemData
         AddItemDescription(damage, "Damage");
         AddItemDescription(mana, "Mana");
         AddItemDescription(speed, "Speed");
+        AddItemDescription(hp, "HP");
         AddItemDescription(flask, "Increase HP healing effect");
         if (minDescriptionLength < 5)
         {

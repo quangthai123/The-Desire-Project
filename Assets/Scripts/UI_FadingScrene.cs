@@ -14,7 +14,6 @@ public class UI_FadingScrene : MonoBehaviour
 
     public void FadeOut()
     {
-       
         anim.SetTrigger("fadeOut");
         
     }

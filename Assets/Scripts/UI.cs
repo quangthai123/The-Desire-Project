@@ -29,18 +29,18 @@ public class UI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             SwitchWithKeyTo(characterUI);
         }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SwitchWithKeyTo(skillTreeUI);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SwitchWithKeyTo(optionUI);
-        }
+        //if (Input.GetKeyDown(KeyCode.B))
+        //{
+        //    SwitchWithKeyTo(skillTreeUI);
+        //}
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    SwitchWithKeyTo(optionUI);
+        //}
       
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class UI_MainManu : MonoBehaviour
 {
-    [SerializeField] private string sceneName = "scene2";
+    [SerializeField] private string sceneName = "scene 2";
     [SerializeField] private GameObject continueBtn;
     [SerializeField] UI_FadingScrene fadeScreen;
 
@@ -18,20 +18,24 @@ public class UI_MainManu : MonoBehaviour
     }
     public void ContinueGame()
     {
-        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        SceneManager.LoadScene(sceneName);
+        // StartCoroutine(LoadSceneWithFadeEffect(1.5f));
     }
 
     public void NewGame()
     {
         SaveManager.instance.DeleteSavedData();
         SceneManager.LoadScene(sceneName);
-        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
-
+        PlayerPrefs.SetInt("extinct", 0);
+        PlayerPrefs.SetInt("flaskModifiers", 0);
+        //StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        //
     }
 
     public void ExitGame()
     {
         Debug.Log("Exit game");
+        Application.Quit();
     }
 
    IEnumerator LoadSceneWithFadeEffect(float _delay)
